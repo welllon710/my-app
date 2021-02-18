@@ -1,0 +1,19 @@
+.my-swiper{
+    width: 762px;
+    height: 220px;
+    margin: 30px auto;
+    ul{
+        height: 200px;
+        position: relative;
+        overflow: hidden;
+        li{
+            position: absolute;
+            list-style: none;
+            img{
+                width: 540px;
+                height: 200px;
+            }
+        }
+        
+    }
+}
