@@ -1,15 +1,16 @@
 import React, { useState } from 'react'
-import {Route,NavLink} from 'react-router-dom';
+import { Route, NavLink } from 'react-router-dom';
+import './index.scss'
 export default function Sider() {
   const [list,setList] = useState([
       {
           id:1,
-          path:'/fount-music',
+          path:'/dashboard/fount-music',
           name:'发现音乐'
       },
       {
         id:2,
-        path:'/friends',
+        path:'/dashboard/friends',
         name:'朋友'
     }
   ])
@@ -17,7 +18,18 @@ export default function Sider() {
         <div className="sider">
             {
                 list.map(item=>{
-                    return (<NavLink key="item.id" to={item.path}></NavLink>)
+                    return (
+                        <div className="sider-path" key={ item.id}>
+                            <NavLink key="item.id"
+                                activeStyle={{
+                                    fontWeight: '600',
+                                    fontSize: '25px',
+                                    backgroundColor:'#f6f6f7'
+                                }}
+                            to={item.path} >{item.name}</NavLink>
+                          
+                        </div>
+                    )
                 })
             }
         </div>
