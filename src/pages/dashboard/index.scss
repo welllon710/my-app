@@ -1,0 +1,13 @@
+.layout{
+    min-width: 1200px;
+    .ant-layout-header{
+        color:'red';
+        background-color:#ec4141;
+    }
+    .ant-layout-sider-children{
+        background-color: #ffffff;//#f6f6f8
+    }
+    .ant-layout-footer{
+        background-color: #f6f6f8;//#f6f6f8
+    }
+}

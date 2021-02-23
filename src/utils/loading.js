@@ -1,9 +1,11 @@
 import { Spin, Alert } from 'antd';
+import React from 'react';
+import ReactDOM from 'react-dom';
 // 当前正在请求的数量
 let requestCount = 0
 
 // 显示loading
-function showLoading () {
+export function showLoading () {
   if (requestCount === 0) {
       var dom = document.createElement('div')
       dom.setAttribute('id', 'loading')
@@ -14,7 +16,7 @@ function showLoading () {
 }
 
 // 隐藏loading
-function hideLoading () {
+export function hideLoading () {
   requestCount--
   if (requestCount === 0) {
       document.body.removeChild(document.getElementById('loading'))

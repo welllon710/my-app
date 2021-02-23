@@ -1,0 +1,32 @@
+.wyy-header{
+    display: flex;
+    justify-content: space-between;
+    .header-left{
+        display: flex;
+        flex: 3;
+        align-items: center;
+        .fnc-cpm{
+            display: flex;
+            align-items: center;
+            .left-icon , .right-icon{
+                font-size: 25px;
+                background-color: #ec4141;
+                color: #fff;
+                padding: 0 5px;
+                cursor: pointer;
+            }
+            .ant-input-search{
+                margin-left: 30px;
+                
+            }
+        }
+    }
+    .header-right{
+        flex: 1;
+       .user-status{
+           padding: 0 10px;
+           color: #fff;
+           cursor: pointer;
+       }
+    }
+}
