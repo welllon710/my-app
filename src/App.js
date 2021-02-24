@@ -5,9 +5,7 @@ import Dashboard from './pages/dashboard'
 import actions from './redux/actions'
 import './App.css';
 const App = () => {
-    const state = useSelector(state => {
-        console.log(state);
-    })
+
     const dispatch = useDispatch()
     useEffect(()=>{
         window.addEventListener('resize', ()=>{
