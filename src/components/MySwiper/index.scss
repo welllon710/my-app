@@ -1,5 +1,7 @@
 .my-swiper{
-    width: 762px;
+    max-width: 100%;
+    display: flex;
+    justify-content: center;
     height: 220px;
     margin: 30px auto;
     ul{

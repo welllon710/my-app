@@ -1,22 +1,19 @@
 import react, { useEffect, useState } from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
-import MySwiper from './pages/MySwiper'
+import {useDispatch,useSelector} from 'react-redux'
 import Dashboard from './pages/dashboard'
+import actions from './redux/actions'
 import './App.css';
 const App = () => {
-    // const [width,setWidth] = useState('0px')
-    // useEffect(() => {
-    //    setWidth(document.documentElement.clientWidth + 'px')
-    // }, [])
-    // useEffect(() => {
-    //     const handleSize = () => {
-    //         setWidth(document.documentElement.clientWidth + 'px')
-    //     }
-    //     window.addEventListener('resize', handleSize, false)
-    //     return () => {
-    //         window.removeEventListener('resize', handleSize, false)
-    //     }
-    // })
+    const state = useSelector(state => {
+        console.log(state);
+    })
+    const dispatch = useDispatch()
+    useEffect(()=>{
+        window.addEventListener('resize', ()=>{
+            dispatch(actions.move(document.documentElement.clientWidth))
+        })
+    })
     return (
         <>
             <Switch>

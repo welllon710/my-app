@@ -3,7 +3,7 @@ import { Tabs } from "antd";
 import { StickyContainer, Sticky } from "react-sticky";
 import "./index.scss";
 
-import MySwiper from "../MySwiper";
+import MySwiper from "../../components/MySwiper";
 const { TabPane } = Tabs;
 const renderTabBar = (props, DefaultTabBar) => (
   <Sticky bottomOffset={80}>
