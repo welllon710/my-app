@@ -1,4 +1,5 @@
-import React, { useEffect, useMemo, useState, useRef } from "react";
+import ColumnGroup from "antd/lib/table/ColumnGroup";
+import React, { useEffect, useMemo, useState, useRef, useCallback } from "react";
 import { useSelector } from "react-redux";
 import "./index.scss";
 export default function Swiper() {
@@ -36,8 +37,8 @@ export default function Swiper() {
       img: "/assets/7.jpg",
     },
   ]);
-  const [currentW, setCurrentW] = useState(760);
-  const [offsetL, setOffsetL] = useState(220);
+  const [currentW, setCurrentW] = useState(762);
+  const [offsetL, setOffsetL] = useState(222);
   const width = useSelector((state) => {
     return state.width;
   });
@@ -45,8 +46,8 @@ export default function Swiper() {
   const [styleList, setStyleList] = useState([]);
   let a = 540;
 
-  useEffect(() => {
-    console.log("执行");
+  useMemo(() => {
+    console.log("执行usememo");
     setStyleList((styleList) => {
       state.map((item, index) => {
         let i = index * 1 + 1;
@@ -75,34 +76,69 @@ export default function Swiper() {
       });
       return styleList;
     });
-  }, []);
+  }, [state]);
   useEffect(() => {
     setCurrentW((currentW) => {
-      return refwidth.current.clientWidth;
+        currentW = refwidth.current.clientWidth
+        console.log('currentW',currentW);
+      return currentW;
     });
-    setOffsetL((offsetL) => {
-      console.log("offsetL的值", offsetL);
-      return currentW - 540;
-    });
+  
   }, [width]);
   useMemo(() => {
-    console.log(styleList);
-    styleList.map((item) => {
-      setStyleList((styleList) => {});
+    setOffsetL((offsetL) => {
+        offsetL = currentW - 540
+        console.log('offsetL',offsetL);
+      return offsetL;
     });
-  }, [width]);
-  const test = (num) => {
+  }, [currentW])
+  useMemo(() => {
+    setStyleList(styleList=>{
+    console.log('重新渲染');
+       let arr =  JSON.parse(JSON.stringify(styleList))
+       arr.map((item,index)=>{
+            let i = index * 1 + 1;
+            if(i <= 3){
+                item.transform = `translateX(${test(i) + "px"})${   
+                    i == 2 ? "" : "scale(0.85)"
+                  }`
+                item.zIndex = `${i == 2 ? "2" : "1"}`
+            }else{
+                a += offsetL;
+                item.transform = `translateX(${a + "px"}) scale(0.85)`
+            }
+            return arr
+        })
+        console.log('c',arr);
+        
+        return arr
+    })
+    
+    
+  }, [currentW]);
+  const test = useCallback((num)=>{
+      console.log('useCall',offsetL);
     switch (num) {
-      case 1:
-        return 0;
-      case 2:
-        console.log("2", offsetL / 2);
-        return offsetL / 2; // 2倍关系 最高300->600   最低130->260   760-540/2 = 110
-      case 3:
-        console.log("2倍", offsetL);
-        return offsetL;
-    }
-  };
+        case 1:
+          return 0;
+        case 2:
+            console.log('当前2222-》',offsetL);
+          return offsetL / 2; // 2倍关系 最高300->600   最低130->260   760-540/2 = 110
+        case 3:
+          return offsetL;
+      }
+  },[offsetL])
+//   const test = (num) => {
+//     switch (num) {
+//       case 1:
+//         return 0;
+//       case 2:
+//           console.log('当前2222-》',offsetL);
+//         return offsetL / 2; // 2倍关系 最高300->600   最低130->260   760-540/2 = 110
+//       case 3:
+//         return offsetL;
+//     }
+//   };
   // useEffect(() => {
   //     const timeOut = setInterval(() => {
   //         setStyleList(styleList=>{
@@ -120,7 +156,7 @@ export default function Swiper() {
   return (
     <div className="my-swiper">
       <ul
-        style={{ width: width === 1200 ? "760px" : width - 1200 + 760 + "px" }}
+        style={{ width: width <= 1200 ? "762px" : width - 1200 + 762 + "px" }}
         ref={refwidth}
       >
         {state.map((item, index) => {
