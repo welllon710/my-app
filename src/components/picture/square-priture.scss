@@ -1,0 +1,14 @@
+.square-priture{
+    margin-bottom: 50px;
+    &:last-child{
+        margin-right: 0px !important;
+    }
+
+    .img-box{
+        .ant-image{
+            .ant-image-img{
+                border-radius: 5px;
+            }
+        }
+    }
+}

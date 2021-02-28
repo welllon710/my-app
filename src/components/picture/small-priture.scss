@@ -1,0 +1,15 @@
+.small-priture{
+    display: flex;
+    width: 30%;
+    cursor: pointer;
+    margin: 10px 0;
+    .list-box{
+        display: flex;
+        .right-text{
+            margin-left: 10px;
+            p{
+                margin: 0;
+            }
+        }
+    }
+}

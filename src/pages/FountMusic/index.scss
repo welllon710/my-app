@@ -6,6 +6,8 @@
     .tutu{
         .ant-tabs-nav-wrap{
             height: 60px;
+            position: fixed !important;
+            top: 64px;
             .ant-tabs-tab {
                 font-size: 16px;
             }

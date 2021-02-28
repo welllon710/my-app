@@ -1,21 +1,12 @@
 import React, { useState } from "react";
 import { Tabs } from "antd";
-import { StickyContainer, Sticky } from "react-sticky";
 import "./index.scss";
 
-import MySwiper from "../../components/MySwiper";
+import Recommed from "../FountMusic/recommend";
+import SongList from "../FountMusic/songList/songList";
+import Redio from "../FountMusic/redio/redio";
 const { TabPane } = Tabs;
-const renderTabBar = (props, DefaultTabBar) => (
-  <Sticky bottomOffset={80}>
-    {({ style }) => (
-      <DefaultTabBar
-        {...props}
-        className="site-custom-tab-bar"
-        style={{ ...style }}
-      />
-    )}
-  </Sticky>
-);
+
 export default function FoundMusic() {
   const [title, setTitle] = useState([
     "个性推荐",
@@ -25,21 +16,30 @@ export default function FoundMusic() {
     "歌手",
     "最新音乐",
   ]);
+  const componentsRender = (i) => {
+    switch (i) {
+      case 0:
+        return <Recommed />;
+      case 1:
+        return <SongList />;
+      case 2:
+        return <Redio />;
+    }
+  };
+
   return (
     <div className="fount-music">
-      <StickyContainer>
-        <div className="tutu">
-          <Tabs defaultActiveKey="0" renderTabBar={renderTabBar}>
-            {title.map((item, index) => {
-              return (
-                <TabPane tab={item} key={index}>
-                  {index === 0 ? <MySwiper /> : ""}
-                </TabPane>
-              );
-            })}
-          </Tabs>
-        </div>
-      </StickyContainer>
+      <div className="tutu">
+        <Tabs defaultActiveKey="0">
+          {title.map((item, index) => {
+            return (
+              <TabPane tab={item} key={index}>
+                {componentsRender(index)}
+              </TabPane>
+            );
+          })}
+        </Tabs>
+      </div>
       ,
     </div>
   );

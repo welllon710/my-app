@@ -7,6 +7,7 @@ import React, {
   useCallback,
 } from "react";
 import { useSelector } from "react-redux";
+import { useWidth } from "../../my-hooks/_width";
 import "./index.scss";
 export default function Swiper() {
   const [state, setstate] = useState([
@@ -43,9 +44,11 @@ export default function Swiper() {
       img: "/assets/IMG_5411.jpg",
     },
   ]);
-  const [currentW, setCurrentW] = useState(762);
+  // const [currentW, setCurrentW] = useState(762);
+  // let width = useSelector((state) => state.width);
+  const [currentW, width] = useWidth();
   const [offsetL, setOffsetL] = useState(222);
-  const width = useSelector((state) => state.width);
+
   const [styleList, setStyleList] = useState([]);
   let a = 540;
   let timeOut = null;
@@ -58,7 +61,7 @@ export default function Swiper() {
             ...styleList,
             {
               transform: `translateX(${test(i) + "px"})${
-                i == 2 ? "" : "scale(0.85)"
+                i == 2 ? "" : "scaleY(0.85)"
               }`,
               transition: "0.5s",
 
@@ -70,7 +73,8 @@ export default function Swiper() {
           styleList = [
             ...styleList,
             {
-              transform: `translateX(${a + "px"}) scale(0.85)`,
+              transform: `translateX(${a + "px"}) scaleY(0.85)`,
+              opacity: "0",
               transition: "0.5s",
             },
           ];
@@ -79,15 +83,15 @@ export default function Swiper() {
       return styleList;
     });
   }, [state]);
-  useMemo(() => {
-    setCurrentW((currentW) => {
-      if (width <= 1200) {
-        return (currentW = 762);
-      } else {
-        return width - 1200 + 762;
-      }
-    });
-  }, [width]);
+  // useMemo(() => {
+  //   setCurrentW((currentW) => {
+  //     if (width <= 1200) {
+  //       return (currentW = 762);
+  //     } else {
+  //       return width - 1200 + 762;
+  //     }
+  //   });
+  // }, [width]);
   const xin = useMemo(() => {
     if (currentW - 540 <= 340) {
       return currentW - 540;
@@ -102,12 +106,13 @@ export default function Swiper() {
         let i = index * 1 + 1;
         if (i <= 3) {
           item.transform = `translateX(${test(i) + "px"})${
-            i == 2 ? "" : "scale(0.85)"
+            i == 2 ? "" : "scaleY(0.85)"
           }`;
           item.zIndex = `${i == 2 ? "2" : "1"}`;
         } else {
           a += offsetL;
-          item.transform = `translateX(${a + "px"}) scale(0.85)`;
+          item.transform = `translateX(${a + "px"}) scaleY(0.85)`;
+          delete item.opacity;
           delete item.zIndex;
         }
         return arr;
@@ -129,16 +134,13 @@ export default function Swiper() {
     },
     [currentW]
   );
-  useEffect(() => {
-    console.log("重新旋转");
-    timeOut = tt();
-    return () => {
-      clearInterval(timeOut);
-    };
-  }, []);
-  useEffect(() => {
-    clearInterval(timeOut);
-  }, [width]);
+  // useEffect(() => {
+  //   console.log("重新旋转");
+  //   timeOut = tt();
+  //   return () => {
+  //     clearInterval(timeOut);
+  //   };
+  // }, []);
   const tt = () => {
     const timeOut = setInterval(() => {
       setStyleList((styleList) => {
