@@ -1,4 +1,4 @@
-import React, { useState,useRef } from "react";
+import React, { useState, useRef } from "react";
 import { Image, Progress } from "antd";
 import {
   HeartOutlined,
@@ -8,29 +8,47 @@ import {
   StepForwardOutlined,
   SendOutlined,
   PauseCircleOutlined,
-  AimOutlined
+  SmileOutlined,
 } from "@ant-design/icons";
 import "./player.scss";
 export default function Player() {
-   const [show,setShow] = useState(true) 
-   const ballRef = useRef()
-  const changePlayer = (status)=>{
-    setShow(!status)
-  }  
-  const mouseDown = ($event)=>{
-    console.log($event);
-    mouseMove()
-    mouseUp()
-  }
-  const mouseMove = ($event)=>{
-    console.log('move',$event);
-    const mouseMove = ()=>{
-      
-    }
-    const mouseUp = ()=>{
-      
-    }
-  }
+  const [show, setShow] = useState(true);
+  const ballRef = useRef();
+  const bgRef = useRef();
+  const changePlayer = (status) => {
+    setShow(!status);
+  };
+  const mouseDown = ($event) => {
+    let { target } = $event;
+
+    let startX = $event.nativeEvent.clientX;
+    let startOffsetX = $event.nativeEvent.layerX;
+
+    let endx = 0;
+    let endOffsetX = 0;
+    let bgW = bgRef.current.clientWidth; //容器宽度
+    document.onmousemove = function (event) {
+      event.preventDefault();
+      endx = event.clientX;
+
+      let moveX = endx - startX;
+      let distancemove = moveX + startOffsetX - 0;
+
+      if (moveX > 0) {
+        endOffsetX = distancemove > bgW ? bgW : distancemove;
+      } else {
+        endOffsetX = distancemove <= 0 ? 0 : distancemove;
+      }
+
+      target.style.transform = `translateX(${endOffsetX + "px"})`;
+    };
+    document.onmouseup = function (event) {
+      // target.style.transform = `translateX(${endOffsetX + "px"})`;
+
+      document.onmousemove = null;
+      document.onmouseup = null;
+    };
+  };
 
   return (
     <div className="player">
@@ -53,24 +71,25 @@ export default function Player() {
           <div className="btn-box">
             <RetweetOutlined />
             <StepBackwardOutlined />
-            {
-               show ?  <PlayCircleOutlined onClick={()=>changePlayer(true)}/>
-                :<PauseCircleOutlined onClick={()=>changePlayer(false)}/>
-            }
+            {show ? (
+              <PlayCircleOutlined onClick={() => changePlayer(true)} />
+            ) : (
+              <PauseCircleOutlined onClick={() => changePlayer(false)} />
+            )}
             <StepForwardOutlined />
             <SendOutlined />
           </div>
         </div>
         <div className="progress-bar">
           <span className="start-time">0.00</span>
-          <div className="bg-bar">
-            <div className="jd-bar"></div> 
-              <AimOutlined className="ball" ref={ballRef} 
-              onMouseDown={mouseDown} 
-              onMouseMove={mouseMove}
-              onMouseUp={mouseUp}
-              />
-          </div>    
+          <div className="bg-bar" ref={bgRef}>
+            <div className="jd-bar"></div>
+            <SmileOutlined
+              className="ball"
+              ref={ballRef}
+              onMouseDown={mouseDown}
+            />
+          </div>
         </div>
       </div>
       <div className="right"></div>
