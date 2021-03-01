@@ -1,0 +1,62 @@
+.player{
+    display: flex;
+    align-items: center;
+    .left{
+        flex: 1;
+        display: flex;
+        padding: 5px 10px;
+        margin-left: 10px;
+        .left-text{
+            margin-left: 10px;
+            p{
+                &:first-child{
+                    margin:5px 0 5px 0;
+                }
+            }
+        }
+    }
+    .centre{
+        flex: 2;
+       .icon-btn{
+           display: flex;
+           justify-content: center;
+           font-size: 25px;
+           .btn-box{
+            width: 60%;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            span{
+                cursor: pointer;
+            }
+            .anticon-play-circle , .anticon-pause-circle{
+                font-size: 35px;
+            }
+           }
+       }
+       .progress-bar{
+           display: flex;
+           align-items: center;
+           .start-time{
+               margin-right: 20px;
+           }
+           .bg-bar{
+               width: 100%;
+               height: 4px;
+               background-color: #e6e6e8;
+               position: relative;
+           }
+           .ball{
+               position: absolute;
+               font-size: 22px;
+               top: -9px;
+               left: -11px;
+               color: #ec4141;
+               cursor: pointer;
+           }
+       }
+    }
+    .right{
+        flex: 1;
+    }
+}

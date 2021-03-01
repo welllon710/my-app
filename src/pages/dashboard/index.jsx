@@ -4,6 +4,7 @@ import { Layout } from 'antd';
 import './index.scss';
 import Myheader from '../../components/Header';
 import Mysider from '../../components/Sider';
+import Plyaer from '../../components/Footer/player';
 
 import FountMusic from '../FountMusic'
 import Friends from '../Friends'
@@ -26,7 +27,9 @@ export default function index() {
                     </Switch>
                 </Content>
             </Layout>
-            <Footer>Footer</Footer>
+            <Footer>
+                <Plyaer />
+            </Footer>
         </Layout>
     )
 }
