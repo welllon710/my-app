@@ -45,6 +45,12 @@
                height: 4px;
                background-color: #e6e6e8;
                position: relative;
+               cursor: pointer;
+               .jd-bar{
+                   position: absolute;
+                   height: 3px;
+                   background-color: #ec4141;
+               }
            }
            .ball{
                position: absolute;
@@ -58,5 +64,10 @@
     }
     .right{
         flex: 1;
+        .f-zone{
+            .drawer{
+                font-size: 25px;
+            }
+        }
     }
 }

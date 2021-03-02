@@ -1,5 +1,7 @@
 import React, { useState, useRef } from "react";
-import { Image, Progress } from "antd";
+import { Image, Progress, Drawer } from "antd";
+import { useDispatch, useSelector } from "react-redux";
+import actions from "../../redux/actions";
 import {
   HeartOutlined,
   RetweetOutlined,
@@ -9,47 +11,53 @@ import {
   SendOutlined,
   PauseCircleOutlined,
   SmileOutlined,
+  UnorderedListOutlined,
 } from "@ant-design/icons";
 import "./player.scss";
 export default function Player() {
   const [show, setShow] = useState(true);
-  const ballRef = useRef();
+  const [jdW, setJdw] = useState(0);
+  const [endOffsetX, setEndOffsetX] = useState(0);
+  const [visible, setVisible] = useState(false);
   const bgRef = useRef();
+  const dispatch = useDispatch();
   const changePlayer = (status) => {
     setShow(!status);
   };
   const mouseDown = ($event) => {
     let { target } = $event;
-
     let startX = $event.nativeEvent.clientX;
     let startOffsetX = $event.nativeEvent.layerX;
-
     let endx = 0;
-    let endOffsetX = 0;
     let bgW = bgRef.current.clientWidth; //容器宽度
     document.onmousemove = function (event) {
       event.preventDefault();
       endx = event.clientX;
-
       let moveX = endx - startX;
       let distancemove = moveX + startOffsetX - 0;
-
       if (moveX > 0) {
-        endOffsetX = distancemove > bgW ? bgW : distancemove;
+        setEndOffsetX(distancemove > bgW ? bgW : distancemove);
       } else {
-        endOffsetX = distancemove <= 0 ? 0 : distancemove;
+        setEndOffsetX(distancemove <= 0 ? 0 : distancemove);
       }
-
-      target.style.transform = `translateX(${endOffsetX + "px"})`;
+      setEndOffsetX((endOffsetX) => {
+        setJdw(endOffsetX);
+      });
     };
     document.onmouseup = function (event) {
-      // target.style.transform = `translateX(${endOffsetX + "px"})`;
-
       document.onmousemove = null;
       document.onmouseup = null;
     };
   };
-
+  const setBar = ($event) => {
+    let { layerX } = $event.nativeEvent;
+    setJdw(layerX);
+    setEndOffsetX(layerX);
+  };
+  const openDrawer = () => {
+    setVisible(!visible);
+    visible ? dispatch(actions.open(true)) : dispatch(actions.close(false));
+  };
   return (
     <div className="player">
       <audio id="audio"></audio>
@@ -82,17 +90,21 @@ export default function Player() {
         </div>
         <div className="progress-bar">
           <span className="start-time">0.00</span>
-          <div className="bg-bar" ref={bgRef}>
-            <div className="jd-bar"></div>
+          <div className="bg-bar" ref={bgRef} onClick={setBar}>
+            <div className="jd-bar" style={{ width: jdW + "px" }}></div>
             <SmileOutlined
               className="ball"
-              ref={ballRef}
               onMouseDown={mouseDown}
+              style={{ transform: `translateX(${endOffsetX + "px"})` }}
             />
           </div>
         </div>
       </div>
-      <div className="right"></div>
+      <div className="right">
+        <div className="f-zone">
+          <UnorderedListOutlined className="drawer" onClick={openDrawer} />
+        </div>
+      </div>
     </div>
   );
 }
