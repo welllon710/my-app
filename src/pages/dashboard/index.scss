@@ -9,10 +9,12 @@
     }
     .ant-layout-content{
         margin-top: 64px;
-        height: calc(100vh - 64px - 70px - 64px );
+        // height: calc(100vh - 64px - 70px - 64px );
         overflow: auto;
         position: relative;
-
+       /deep/ .drawer {
+           height: 660px;
+       }
     }
     .ant-layout-footer{
         padding: 0;

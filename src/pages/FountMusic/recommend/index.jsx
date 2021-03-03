@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { useSelector } from "react-redux";
-import { Space } from "antd";
+import { useHistory } from "react-router-dom";
 import { RightOutlined } from "@ant-design/icons";
 import MySwiper from "../../../components/MySwiper";
 import SquarePriture from "../../../components/picture/square-priture";
@@ -66,8 +66,9 @@ export default function Recommed() {
       text: "mv10号",
     },
   ]);
-  const [currentW, width] = useWidth();
-  const newMusic_ = JSON.parse(JSON.stringify(newMusic));
+  const [currentW, width] = useWidth(); //动态长度
+  let history = useHistory();
+  const newMusic_ = JSON.parse(JSON.stringify(newMusic)); //不改变原数组
   let _newList = useMemo(() => {
     if (currentW <= 900) {
       newMusic_.splice(-1, 1);
@@ -78,6 +79,11 @@ export default function Recommed() {
   }, [currentW]);
   let _newListLength = _newList.length;
   const _length = list.length;
+  const goDetail = (data) => {
+    //路由跳转
+    console.log("我是父亲", history);
+    history.push("/dashboard/details");
+  };
   return (
     <div className="recommend">
       <MySwiper></MySwiper>
@@ -90,9 +96,19 @@ export default function Recommed() {
           {list.map((item, index) => {
             {
               return index + 1 === 5 ? (
-                <SquarePriture text={item.text} sty={"0px"} curw={"18%"} />
+                <SquarePriture
+                  text={item.text}
+                  sty={"0px"}
+                  curw={"18%"}
+                  goDetails={goDetail}
+                />
               ) : (
-                <SquarePriture text={item.text} sty={"2%"} curw={"18%"} />
+                <SquarePriture
+                  text={item.text}
+                  sty={"2%"}
+                  curw={"18%"}
+                  goDetails={goDetail}
+                />
               );
             }
           })}

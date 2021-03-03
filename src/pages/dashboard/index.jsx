@@ -10,6 +10,7 @@ import Plyaer from "../../components/Footer/player";
 import pubsub from "pubsub-js";
 import FountMusic from "../FountMusic";
 import Friends from "../Friends";
+import Details from "../Details/details";
 const { Header, Footer, Sider, Content } = Layout;
 export default function Dashboard() {
   const isOpen = useSelector((state) => state.isOpen);
@@ -26,10 +27,11 @@ export default function Dashboard() {
         <Sider>
           <Mysider></Mysider>
         </Sider>
-        <Content>
+        <Content style={{ height: `calc(100vh - 64px - 70px - 64px )` }}>
           <Switch>
             <Route path="/dashboard/fount-music" component={FountMusic}></Route>
             <Route path="/dashboard/friends" component={Friends}></Route>
+            <Route path="/dashboard/details" component={Details}></Route>
           </Switch>
           <Drawer
             className="drawer"
@@ -38,8 +40,8 @@ export default function Dashboard() {
             closable={false}
             onClose={onClose}
             visible={isOpen}
-            getContainer={false}
             mask={false}
+            width={500}
             style={{ position: "absolute" }}>
             <p>Some contents...</p>
           </Drawer>
