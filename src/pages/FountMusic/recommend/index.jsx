@@ -1,5 +1,4 @@
 import React, { useState, useMemo } from "react";
-import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { RightOutlined } from "@ant-design/icons";
 import MySwiper from "../../../components/MySwiper";
@@ -7,6 +6,8 @@ import SquarePriture from "../../../components/picture/square-priture";
 import RectanglePriture from "../../../components/picture/rectangle-priture";
 import SmallPriture from "../../../components/picture/small-priture";
 import { useWidth } from "../../../my-hooks/_width";
+import useRequest from "../../../my-hooks/_request";
+import fontMusic from "../../../api/foundMusic.js";
 import "./index.scss";
 export default function Recommed() {
   const [list, setList] = useState([
@@ -66,7 +67,10 @@ export default function Recommed() {
       text: "mv10号",
     },
   ]);
-  const [currentW, width] = useWidth(); //动态长度
+  const [result] = useRequest(fontMusic.banner); //简化版请求 --参考vue minix
+  const [currentW, width] = useWidth(); //动态长度22
+
+  console.log("result", result);
   let history = useHistory();
   const newMusic_ = JSON.parse(JSON.stringify(newMusic)); //不改变原数组
   let _newList = useMemo(() => {

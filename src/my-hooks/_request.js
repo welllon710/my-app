@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import request from '../api/request'
 const useRequest = (datas)=>{
-    const {url,method,data,params} = datas
+    const { url, method, data, params } = datas
     const parasms = {url,method,data,params}
-    const result = null
+    const [result, setResult] = useState(null)
     if(method === 'post'){
         delete parasms.params
     }
@@ -11,11 +11,13 @@ const useRequest = (datas)=>{
         delete parasms.data
     }
     useEffect(() => {
-        request(parasms).then(res=>{
-            console.log('res',res);
-            result = res
+          request(parasms).then(res=>{
+            setResult(result => {
+                result = res
+                return result
+            })
         })
     }, [])
-   return [result]
+    return [result]
 }
 export default useRequest
