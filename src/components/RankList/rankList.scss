@@ -1,0 +1,43 @@
+.rank-list{
+    display: flex;
+    .rank-left{
+        flex: 1;
+        .ant-image{
+            .ant-image-img{
+                border-radius: 10px;
+            }
+        }
+    }
+    .rank-right{
+        flex: 3;
+        ul{
+            list-style: none;
+            li{
+                padding: 8px;
+                display: flex;
+                justify-content: space-between;
+                border-radius: 5px;
+                span{
+                    &:nth-child(2){
+                        margin: 0 10px;
+                    }
+                }
+                .active{
+                    color: red;
+                }
+                &:nth-child(odd) {
+                    background: #f9f9f9;
+                }
+                &:nth-child(even) {
+                    background: #ffffff;
+                }
+
+               
+            }
+        }
+        .seeAll{
+            cursor: pointer;
+        }
+    }
+
+}
