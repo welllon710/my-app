@@ -1,0 +1,77 @@
+.new-music{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    .music-tabs{
+        display: flex;
+        justify-content: center;
+        .tabs-box{
+            width: 280px;
+            display: flex;
+            border: 1px solid #bbbbbb;
+            border-radius: 15px;
+            div {
+                text-align: center;
+                padding: 5px 10px;
+                 border-radius: 15px;
+                 font-size: 12px;
+                 cursor: pointer;
+                &:nth-child(1) {
+                    flex: 1;
+                }
+                &:nth-child(2) {
+                     flex: 1;
+                }
+                &.active{
+                     background-color: #bbbbbb;
+                     color: #fff;
+                }
+            }
+        }
+        
+    }
+    .music-list{
+        margin-top: 30px;
+        .country-cate{
+            display: flex;
+            div{
+                margin-right: 15px;
+                cursor: pointer;
+               &.active{
+                   font-weight: 600;
+               }
+            }
+        }
+        .picture-list{
+            ul{
+                list-style: none;
+                li{
+                    display: flex;
+                    margin: 10px 0;
+                    padding: 5px 30px;
+                    background-color: #f9f9f9;
+                    .li-left{
+                        flex: 1;
+                        display: flex;
+                        align-items: center;
+                        .serial{
+                            margin: 0 20px 0 10px;
+                        }
+                        .music-name{
+                            margin-left: 10px;
+                            font-size: 16px;
+                            font-weight: 600;
+                        }
+                    }
+                    .li-right{
+                        flex: 1;
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                    }
+                }
+            }
+        }
+    }
+}

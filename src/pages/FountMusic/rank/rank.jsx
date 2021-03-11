@@ -31,12 +31,12 @@ export default function Rank() {
       <h2 style={{ width: currentW }}>全球版</h2>
       <div className="global" style={{ width: currentW }}>
         {songList.map((item, index) => {
-          return index + 1 === 5 ? (
+          return (index + 1) % 5 === 0 ? (
             <SquarePriture
               key={item.id}
               text={item.id}
               sty={"0px"}
-              curw={"20%"}
+              curw={"18%"}
             />
           ) : (
             <SquarePriture text={item.text} sty={"2%"} curw={"18%"} />

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Route, Switch } from "react-router-dom";
 import { Layout, Drawer } from "antd";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,10 +14,19 @@ import Details from "../Details/details";
 const { Header, Footer, Sider, Content } = Layout;
 export default function Dashboard() {
   const isOpen = useSelector((state) => state.isOpen);
+  let isDetails = useSelector((state) => state.isDetails);
   const dispatch = useDispatch();
   const onClose = () => {
     dispatch(actions.close(false));
   };
+  const isD = useMemo(() => {
+    //`calc(100vh - 64px - 70px - 64px )`
+    if (isDetails) {
+      return { height: `calc(100vh - 64px - 70px - 64px )`, marginTop: "64px" };
+    } else {
+      return { height: `calc(100vh - 64px - 70px )`, marginTop: "0px" };
+    }
+  }, [isDetails]);
   return (
     <Layout className="layout">
       <Header>
@@ -27,7 +36,7 @@ export default function Dashboard() {
         <Sider>
           <Mysider></Mysider>
         </Sider>
-        <Content style={{ height: `calc(100vh - 64px - 70px - 64px )` }}>
+        <Content style={{ height: isD.height, marginTop: isD.marginTop }}>
           <Switch>
             <Route path="/dashboard/fount-music" component={FountMusic}></Route>
             <Route path="/dashboard/friends" component={Friends}></Route>

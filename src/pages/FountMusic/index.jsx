@@ -7,6 +7,7 @@ import SongList from "../FountMusic/songList/songList";
 import Redio from "../FountMusic/redio/redio";
 import Rank from "../FountMusic/rank/rank";
 import Singer from "../FountMusic/singer/singer";
+import NewMusic from "../FountMusic/newMusic/newMusic";
 const { TabPane } = Tabs;
 
 export default function FoundMusic() {
@@ -30,6 +31,8 @@ export default function FoundMusic() {
         return <Rank />;
       case 4:
         return <Singer />;
+      case 5:
+        return <NewMusic />;
     }
   };
 

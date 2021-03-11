@@ -28,4 +28,17 @@ export default {
         return preStae;
     }
   },
+  isDetails(preStae = true, action) {
+    const { type, data } = action;
+    switch (type) {
+      case "GO":
+        preStae = data;
+        return preStae;
+      case "LEAVE":
+        preStae = data;
+        return preStae;
+      default:
+        return preStae;
+    }
+  },
 };
