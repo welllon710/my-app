@@ -1,0 +1,17 @@
+.music-details{
+    padding: 15px 20px;
+    height: 210px;
+    .top{
+        display: flex;
+        align-items: center;
+        .text{
+            h2{
+                font-size: 25px;
+                font-weight: bold;
+            }
+        }
+    }
+    .bottom{
+        
+    }
+}

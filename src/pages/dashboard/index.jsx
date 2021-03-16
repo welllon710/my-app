@@ -1,5 +1,5 @@
-import React, { useMemo } from "react";
-import { Route, Switch } from "react-router-dom";
+import React, { useMemo, useEffect } from "react";
+import { Route, Switch, useHistory } from "react-router-dom";
 import { Layout, Drawer } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import actions from "../../redux/actions";
@@ -16,9 +16,19 @@ export default function Dashboard() {
   const isOpen = useSelector((state) => state.isOpen);
   let isDetails = useSelector((state) => state.isDetails);
   const dispatch = useDispatch();
+  const dispatchTop = useDispatch();
+  const history = useHistory();
   const onClose = () => {
     dispatch(actions.close(false));
   };
+  useEffect(() => {
+    history.listen((historyLocation) => {
+      console.log("historyLocation-----", historyLocation);
+      if (historyLocation.pathname === "/dashboard/fount-music") {
+        dispatchTop(actions.leaveDetail(true));
+      }
+    });
+  }, [history]);
   const isD = useMemo(() => {
     //`calc(100vh - 64px - 70px - 64px )`
     if (isDetails) {

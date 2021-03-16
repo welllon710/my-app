@@ -6,8 +6,10 @@
     }
     .ant-layout-sider-children{
         background-color: #ffffff;//#f6f6f8
+        border-right: 1px solid #e5e5e5;
     }
     .ant-layout-content{
+        background-color: #fff;
         margin-top: 64px;
         // height: calc(100vh - 64px - 70px - 64px );
         overflow: auto;

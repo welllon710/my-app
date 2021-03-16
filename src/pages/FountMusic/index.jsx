@@ -49,7 +49,7 @@ export default function FoundMusic() {
           })}
         </Tabs>
       </div>
-      ,
+      <div style={{ height: "65px" }}></div>
     </div>
   );
 }
