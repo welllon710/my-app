@@ -5,51 +5,22 @@ import React, {
   useState,
   useRef,
   useCallback,
+  memo,
 } from "react";
 import { useSelector } from "react-redux";
 import { useWidth } from "../../my-hooks/_width";
 import "./index.scss";
-export default function Swiper() {
-  const [state, setstate] = useState([
-    {
-      id: 1,
-      img: "/assets/IMG_4966.jpg",
-    },
-    {
-      id: 2,
-      img: "/assets/IMG_4976.jpg",
-    },
-    {
-      id: 3,
-      img: "/assets/IMG_5093.jpg",
-    },
-    {
-      id: 4,
-      img: "/assets/IMG_5376.jpg",
-    },
-    {
-      id: 5,
-      img: "/assets/IMG_5395.jpg",
-    },
-    {
-      id: 6,
-      img: "/assets/IMG_5399.jpg",
-    },
-    {
-      id: 7,
-      img: "/assets/IMG_5407.jpg",
-    },
-    {
-      id: 8,
-      img: "/assets/IMG_5411.jpg",
-    },
-  ]);
-  // const [currentW, setCurrentW] = useState(762);
+export default memo(function Swiper(props) {
+  const { list } = props;
+  const [state, setstate] = useState([]);
+  //  const [currentW, setCurrentW] = useState(762);
   // let width = useSelector((state) => state.width);
   const [currentW, width] = useWidth();
   const [offsetL, setOffsetL] = useState(222);
-
   const [styleList, setStyleList] = useState([]);
+  useEffect(() => {
+    setstate(list);
+  }, [list]);
   let a = 540;
   let timeOut = null;
   useMemo(() => {
@@ -83,15 +54,6 @@ export default function Swiper() {
       return styleList;
     });
   }, [state]);
-  // useMemo(() => {
-  //   setCurrentW((currentW) => {
-  //     if (width <= 1200) {
-  //       return (currentW = 762);
-  //     } else {
-  //       return width - 1200 + 762;
-  //     }
-  //   });
-  // }, [width]);
   const xin = useMemo(() => {
     if (currentW - 540 <= 340) {
       return currentW - 540;
@@ -134,13 +96,13 @@ export default function Swiper() {
     },
     [currentW]
   );
-  // useEffect(() => {
-  //   console.log("重新旋转");
-  //   timeOut = tt();
-  //   return () => {
-  //     clearInterval(timeOut);
-  //   };
-  // }, []);
+  useEffect(() => {
+    console.log("重新旋转");
+    timeOut = tt();
+    return () => {
+      clearInterval(timeOut);
+    };
+  }, []);
   const tt = () => {
     const timeOut = setInterval(() => {
       setStyleList((styleList) => {
@@ -156,16 +118,15 @@ export default function Swiper() {
   return (
     <div className="my-swiper">
       <ul
-        style={{ width: width <= 1200 ? "762px" : width - 1200 + 762 + "px" }}
-      >
+        style={{ width: width <= 1200 ? "762px" : width - 1200 + 762 + "px" }}>
         {state.map((item, index) => {
           return (
-            <li key={item.id} style={styleList[index]}>
-              <img src={item.img} />
+            <li key={index} style={styleList[index]}>
+              <img src={item.imageUrl} />
             </li>
           );
         })}
       </ul>
     </div>
   );
-}
+});

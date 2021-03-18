@@ -1,6 +1,9 @@
 .music-details{
     padding: 15px 20px;
     height: 210px;
+    .music-recommend{
+        border-bottom: 1px solid #e5e5e5;
+        padding-bottom: 20px;
     .top{
         display: flex;
         align-items: center;
@@ -12,6 +15,11 @@
         }
     }
     .bottom{
-        
+        margin-left: 20px;
+        .ant-btn{
+            background-color: #ec4141;
+            color: #Fff;
+        }
     }
+}
 }
