@@ -1,23 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, memo } from "react";
 import { Image, Pagination } from "antd";
 import { BulbOutlined, RightOutlined } from "@ant-design/icons";
 import { useWidth } from "../../../my-hooks/_width";
-import SquarePriture from "../../../components/picture/square-priture";
+import { requestList, useSongList } from "../../../my-hooks/_request";
+import fontMusic from "../../../api/foundMusic";
+import SquarePriture from "../../../components/picture/square-priture/square-priture";
 import "./songList.scss";
-export default function SongList() {
+export default memo(function SongList() {
   const [currentW, width] = useWidth();
-  const [tabs, setTabs] = useState([
-    "华语",
-    "流行",
-    "摇滚",
-    "民谣",
-    "电子",
-    "另类/独立",
-    "轻音乐",
-    "综艺",
-    "影视原声",
-    "ACG",
-  ]);
+  const { tabs, songLists, setCatVal } = useSongList();
+  // useEffect(() => {
+  //   console.log("重复执行");
+  //   requestList(fontMusic.playlistHot).then((res) => {
+  //     const { tags } = res;
+  //     console.log("res", res);
+  //   });
+  // }, []);
   const [songList, setSongList] = useState([
     { id: 1 },
     { id: 2 },
@@ -37,6 +35,10 @@ export default function SongList() {
   ]);
   const onShowSizeChange = (current, pageSize) => {
     console.log(current, pageSize);
+  };
+  //根据标签获取列表
+  const changeTabs = (name) => {
+    setCatVal(name);
   };
   const setOffsetW = (item, index) => {
     if (currentW >= 900) {
@@ -101,7 +103,7 @@ export default function SongList() {
         <div className="tabs-right">
           <ul>
             {tabs.map((item) => {
-              return <li>{item}</li>;
+              return <li onClick={() => changeTabs(item.name)}>{item.name}</li>;
             })}
           </ul>
         </div>
@@ -121,4 +123,4 @@ export default function SongList() {
       </div>
     </div>
   );
-}
+});

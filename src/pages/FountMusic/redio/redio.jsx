@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { Carousel } from "antd";
 import { RightOutlined, LeftOutlined } from "@ant-design/icons";
 import MySwiper from "../../../components/MySwiper";
-import SquarePriture from "../../../components/picture/square-priture";
+import SquarePriture from "../../../components/picture/square-priture/square-priture";
 import { useWidth } from "../../../my-hooks/_width";
 import "./redio.scss";
 export default function Redio() {

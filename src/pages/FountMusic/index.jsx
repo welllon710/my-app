@@ -8,9 +8,11 @@ import Redio from "../FountMusic/redio/redio";
 import Rank from "../FountMusic/rank/rank";
 import Singer from "../FountMusic/singer/singer";
 import NewMusic from "../FountMusic/newMusic/newMusic";
+import { useDashboard } from "../../my-hooks/_request";
 const { TabPane } = Tabs;
 
 export default function FoundMusic() {
+  const [count, setCount] = useState(0);
   const [title, setTitle] = useState([
     "个性推荐",
     "歌单",
@@ -19,9 +21,11 @@ export default function FoundMusic() {
     "歌手",
     "最新音乐",
   ]);
+  const { setState } = useDashboard(false);
   const componentsRender = (i) => {
     switch (i) {
       case 0:
+        console.log("count", count, i);
         return <Recommed />;
       case 1:
         return <SongList />;
@@ -35,11 +39,19 @@ export default function FoundMusic() {
         return <NewMusic />;
     }
   };
-
+  const cllback = (key, event) => {
+    console.log("key", key);
+    switch (Number(key)) {
+      case 0:
+        console.log("点我了吧");
+        setState(true);
+        break;
+    }
+  };
   return (
     <div className="fount-music">
       <div className="tutu">
-        <Tabs defaultActiveKey="0">
+        <Tabs defaultActiveKey="0" onTabClick={cllback}>
           {title.map((item, index) => {
             return (
               <TabPane tab={item} key={index}>

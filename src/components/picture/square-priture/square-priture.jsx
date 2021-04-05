@@ -6,7 +6,7 @@ import "./square-priture.scss";
 function Squarepriture(props) {
   const { item, sty, curw, goDetails } = props;
   // const { picUrl } = item;
-  console.log("props", props);
+
   return (
     <div
       className="square-priture"

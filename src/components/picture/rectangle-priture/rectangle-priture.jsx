@@ -1,5 +1,5 @@
 import React, { useRef, useMemo, memo, useEffect } from "react";
-import { useWidth } from "../../my-hooks/_width";
+import { useWidth } from "../../../my-hooks/_width";
 import { Image } from "antd";
 import "./rectangle-priture.scss";
 function RectanglePriture(props) {
@@ -12,7 +12,15 @@ function RectanglePriture(props) {
       className="rectangle-priture"
       style={{ marginRight: sty, width: curw, height: imgW / 2 }}>
       <div className="img-box">
-        <Image height={imgW / 2} src={item.picUrl} preview={false} />
+        <Image
+          height={imgW / 2}
+          src={
+            item
+              ? item.picUrl
+              : "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+          }
+          preview={false}
+        />
       </div>
       <div className="img-text">{item.name}</div>
     </div>

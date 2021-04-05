@@ -2,74 +2,41 @@ import React, { useState, useMemo, useEffect, memo, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import { RightOutlined } from "@ant-design/icons";
 import MySwiper from "../../../components/MySwiper";
-import SquarePriture from "../../../components/picture/square-priture";
-import RectanglePriture from "../../../components/picture/rectangle-priture";
-import SmallPriture from "../../../components/picture/small-priture";
+import SquarePriture from "../../../components/picture/square-priture/square-priture";
+import RectanglePriture from "../../../components/picture/rectangle-priture/rectangle-priture";
+import SmallPriture from "../../../components/picture/small-priture/small-priture";
 import { useWidth } from "../../../my-hooks/_width";
-import myRequest from "../../../my-hooks/_request";
-import fontMusic from "../../../api/foundMusic.js";
+import { useDashboard } from "../../../my-hooks/_request";
 import "./index.scss";
 export default memo(function Recommed() {
-  const [list, setList] = useState([]);
-  const [exclusive, setExclusive] = useState([]);
-  const [mv, setMv] = useState([
-    {
-      text: "mv8号",
-    },
-    {
-      text: "mv9号",
-    },
-    {
-      text: "mv10号",
-    },
-  ]);
-  const [newMusic, setNewMusic] = useState([
-    {
-      text: "mv10号",
-    },
-    {
-      text: "mv8号",
-    },
-    {
-      text: "mv9号",
-    },
-    {
-      text: "mv10号",
-    },
-  ]);
-  //简化版请求 --参考vue minix
-
-  const [currentW, width] = useWidth(); //动态长度22
   let history = useHistory();
-  const newMusic_ = JSON.parse(JSON.stringify(newMusic)); //不改变原数组
+  const { bannerList, list, exclusive, NewSong, mvList } = useDashboard(true);
+  const [currentW, width] = useWidth(); //动态长度22
+  const newMusic_ = JSON.parse(JSON.stringify(mvList)); //不改变原数组
+
   let _newList = useMemo(() => {
     if (currentW <= 900) {
       newMusic_.splice(-1, 1);
       return newMusic_;
     } else {
-      return newMusic;
+      return mvList;
     }
   }, [currentW]);
-  const [bannerList, setBannerList] = useState([]);
-  useEffect(() => {
-    //请求轮播图
-    myRequest(fontMusic.banner).then((res) => {
-      const { banners } = res;
-      setBannerList(banners);
-    });
-    //请求每日推荐
-    myRequest(fontMusic.personalized).then((res) => {
-      const { result } = res;
-      setList(result);
-    });
-    //获取独家放送
-    myRequest(fontMusic.privatecontent).then((res) => {
-      const { result } = res;
-      setExclusive(result);
-    });
-  }, []);
-  let _newListLength = _newList.length;
-  const _length = list.length;
+
+  const setMvList = () => {
+    if (_newList.length > 0) {
+      return _newList;
+    } else {
+      if (currentW <= 900) {
+        newMusic_.splice(-1, 1);
+        return newMusic_;
+      } else {
+        return mvList;
+      }
+    }
+  };
+  let _newListLength = setMvList().length;
+
   const goDetail = (data) => {
     //路由跳转
     console.log("我是父亲", history);
@@ -121,45 +88,43 @@ export default memo(function Recommed() {
                 item={item}
                 sty={"3%"}
                 curw={"32%"}
-                _length={3}></RectanglePriture>
+                _length={3}
+              />
             );
           })}
         </div>
       </div>
-      {/* <div className="new-music-list">
-        <h2 style={{ width: currentW }}>
-          最新音乐
-          <RightOutlined />
-        </h2>
-        <div className="list-box" style={{ width: currentW }}>
-          {list.map((item, index) => {
-            return (
-              <SmallPriture
-                text={item.text}
-                curw={"33%"}
-                key={index}></SmallPriture>
-            );
-          })}
+      {
+        <div className="new-music-list">
+          <h2 style={{ width: currentW }}>
+            最新音乐
+            <RightOutlined />
+          </h2>
+          <div className="list-box" style={{ width: currentW }}>
+            {NewSong.map((item, index) => {
+              return <SmallPriture item={item} curw={"33%"} key={index} />;
+            })}
+          </div>
         </div>
-      </div> */}
-      {/* <div className="mv-list">
+      }
+      <div className="mv-list">
         <h2 style={{ width: currentW }}>
           推荐MV
           <RightOutlined />
         </h2>
         <div className="list-box" style={{ width: currentW }}>
-          {_newList.map((item, index) => {
+          {setMvList().map((item, index) => {
             return (
               <RectanglePriture
                 key={index}
-                text={item.text}
+                item={item}
                 sty={"3%"}
                 curw={_newListLength === 3 ? "33%" : "22%"}
                 _length={_newListLength}></RectanglePriture>
             );
           })}
         </div>
-      </div> */}
+      </div>
     </div>
   );
 });

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Space, Typography, Divider } from "antd";
 import { useWidth } from "../../../my-hooks/_width";
-import SquarePriture from "../../../components/picture/square-priture";
+import SquarePriture from "../../../components/picture/square-priture/square-priture";
 import "./singer.scss";
 export default function Singer() {
   const [language, setLanguage] = useState([

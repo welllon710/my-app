@@ -2,18 +2,26 @@ import React from "react";
 import { Image } from "antd";
 import "./small-priture.scss";
 export default function SmallPriture(props) {
-  const { text, curw } = props;
+  const { item, curw } = props;
+  const setAuthor = (i) => {
+    return i.song.artists[0].name;
+  };
   return (
     <div className="small-priture" style={{ width: curw }}>
       <div className="list-box">
         <Image
+          preview={false}
           width={50}
           height={50}
-          src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+          src={
+            item
+              ? item.picUrl
+              : "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+          }
         />
         <div className="right-text">
-          <p>形容</p>
-          <p>沈以诚</p>
+          <p>{item.name}</p>
+          <p>{setAuthor(item)}</p>
         </div>
       </div>
     </div>

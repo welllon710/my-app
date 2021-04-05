@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useWidth } from "../../../my-hooks/_width";
 import RankList from "../../../components/RankList/rankList";
-import SquarePriture from "../../../components/picture/square-priture";
+import SquarePriture from "../../../components/picture/square-priture/square-priture";
 import "./rank.scss";
 export default function Rank() {
   const [currentW, width] = useWidth(); //动态长度22
