@@ -1,4 +1,11 @@
-import React, { useState, useMemo, useEffect, memo, useRef } from "react";
+import React, {
+  useState,
+  useMemo,
+  useEffect,
+  memo,
+  useRef,
+  useCallback,
+} from "react";
 import { useHistory } from "react-router-dom";
 import { RightOutlined } from "@ant-design/icons";
 import MySwiper from "../../../components/MySwiper";
@@ -37,11 +44,10 @@ export default memo(function Recommed() {
   };
   let _newListLength = setMvList().length;
 
-  const goDetail = (data) => {
+  const goDetail = useCallback((data) => {
     //路由跳转
-    console.log("我是父亲", history);
-    history.push("/dashboard/details");
-  };
+    history.push(`/dashboard/fount-music/${555}`);
+  }, []);
   return (
     <div className="recommend">
       <MySwiper list={bannerList}></MySwiper>

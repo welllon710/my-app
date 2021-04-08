@@ -48,9 +48,14 @@ export default function Dashboard() {
         </Sider>
         <Content style={{ height: isD.height, marginTop: isD.marginTop }}>
           <Switch>
-            <Route path="/dashboard/fount-music" component={FountMusic}></Route>
+            <Route
+              exact
+              path="/dashboard/fount-music"
+              component={FountMusic}></Route>
             <Route path="/dashboard/friends" component={Friends}></Route>
-            <Route path="/dashboard/details" component={Details}></Route>
+            <Route
+              path="/dashboard/fount-music/:id"
+              component={Details}></Route>
           </Switch>
           <Drawer
             className="drawer"
