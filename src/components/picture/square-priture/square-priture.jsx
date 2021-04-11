@@ -1,4 +1,4 @@
-import react from "react";
+import react, { memo } from "react";
 import { withRouter } from "react-router-dom";
 import { Image } from "antd";
 import { CalendarOutlined } from "@ant-design/icons";
@@ -18,7 +18,7 @@ function Squarepriture(props) {
             style={{ cursor: "pointer" }}
             src={
               item
-                ? item.picUrl
+                ? item.picUrl || item.coverImgUrl
                 : "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
             }
             onClick={() => goDetails("hhhh")}
@@ -35,4 +35,4 @@ function Squarepriture(props) {
     </div>
   );
 }
-export default Squarepriture;
+export default memo(Squarepriture);
