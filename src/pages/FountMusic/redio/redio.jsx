@@ -41,7 +41,7 @@ export default function Redio() {
   };
   return (
     <div className="redio">
-      <MySwiper></MySwiper>
+      {/* <MySwiper></MySwiper> */}
       <div className="icon-list">
         <div className="swiper-box" style={{ width: currentW }}>
           <Carousel ref={SwipeRef}>

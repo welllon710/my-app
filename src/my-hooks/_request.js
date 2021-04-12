@@ -123,9 +123,21 @@ const useSongList = () => {
     setBefore
   }
 }
+const useDetail = (id)=>{
+  const [songList,setSongList] = useState({})
+  useEffect(() => {
+    //获取标签
+    requestList({...fontMusic.songDetail,params:{id}}).then((res) => {
+      console.log('歌单详情',res);
+      setSongList(res.playlist)
+    });
+  }, [id])
+  return {songList}
+}
 export {
   requestList,
   useDashboard,
   useSongList,
+  useDetail
 
 }

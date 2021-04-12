@@ -17,9 +17,9 @@ const App = () => {
         <>
             <Switch>
                 {/* <Route path="/swiper" component={MySwiper}></Route> */}
-                <Route path="/dashboard" component={Dashboard}></Route>
+                <Route path="/dashboard" component={Dashboard} ></Route>
                 <Route path="/test" component={Test}></Route>
-                <Redirect to="/dashboard"></Redirect>
+                <Redirect to="/dashboard/fount-music"></Redirect>
             </Switch>
         </>
     )

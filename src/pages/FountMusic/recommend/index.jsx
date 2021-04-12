@@ -20,7 +20,8 @@ export default memo(function Recommed() {
   const { bannerList, list, exclusive, NewSong, mvList } = useDashboard(true);
   const [currentW, width] = useWidth(); //动态长度22
   const newMusic_ = JSON.parse(JSON.stringify(mvList)); //不改变原数组
-
+  const [time] = useState(()=>new Date().getDate())
+  console.log('time',time);
   let _newList = useMemo(() => {
     if (currentW <= 900) {
       newMusic_.splice(-1, 1);
@@ -44,9 +45,9 @@ export default memo(function Recommed() {
   };
   let _newListLength = setMvList().length;
 
-  const goDetail = useCallback((data) => {
+  const goDetail = useCallback((id) => {
     //路由跳转
-    history.push(`/dashboard/fount-music/${555}`);
+    history.push(`/dashboard/fount-music/${id}`);
   }, []);
   return (
     <div className="recommend">
@@ -57,7 +58,7 @@ export default memo(function Recommed() {
           <RightOutlined />
         </h2>
         <div className="list-box" style={{ width: currentW }}>
-          <SquarePriture sty={"2%"} curw={"18%"} goDetails={goDetail} />
+          <SquarePriture sty={"2%"} curw={"18%"} goDetails={goDetail} >{time}</SquarePriture>
           {list.map((item, index) => {
             {
               return index + 2 === 5 ? (

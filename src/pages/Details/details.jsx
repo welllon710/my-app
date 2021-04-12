@@ -1,15 +1,21 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import actions from "../../redux/actions";
 import { Button, Radio, Table, Tag, Space } from "antd";
 
 import { CaretRightOutlined } from "@ant-design/icons";
+import {useDetail} from '../../my-hooks/_request';
 import "./details.scss";
-export default function Details() {
+export default function Details(props) {
+  const { match:{params} } = props
   const dispatch = useDispatch();
+  const {songList} = useDetail(params.id)
+  const [myList,setMyList] = useState([])
   useEffect(() => {
-    console.log("来到了详情");
     dispatch(actions.goDetail(false));
+    const {tracks} = songList
+    setMyList(tracks)
   }, []);
   const columns = [
     {

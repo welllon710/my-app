@@ -29,6 +29,11 @@ export default {
     highquality: {
         url: '/top/playlist/highquality?limit=50',
         method: 'get'
+    },
+    //获取歌单详情
+    songDetail: {
+        url: '/playlist/detail',
+        method: 'get'
     }
 
 }

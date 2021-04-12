@@ -6,7 +6,6 @@ import "./square-priture.scss";
 function Squarepriture(props) {
   const { item, sty, curw, goDetails } = props;
   // const { picUrl } = item;
-
   return (
     <div
       className="square-priture"
@@ -21,13 +20,13 @@ function Squarepriture(props) {
                 ? item.picUrl || item.coverImgUrl
                 : "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
             }
-            onClick={() => goDetails("hhhh")}
+            onClick={() => goDetails(item.id)}
           />
         ) : (
           <div className="every-day">
             <CalendarOutlined />
             <Image preview={false} src="/assets/bgc.png"></Image>
-            <span className="data">18</span>
+            <span className="data">{props.children}</span>
           </div>
         )}
       </div>
