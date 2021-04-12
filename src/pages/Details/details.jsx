@@ -5,18 +5,32 @@ import actions from "../../redux/actions";
 import { Button, Radio, Table, Tag, Space } from "antd";
 
 import { CaretRightOutlined } from "@ant-design/icons";
-import {useDetail} from '../../my-hooks/_request';
+import { useDetail } from "../../my-hooks/_request";
 import "./details.scss";
 export default function Details(props) {
-  const { match:{params} } = props
+  const {
+    match: { params },
+  } = props;
   const dispatch = useDispatch();
-  const {songList} = useDetail(params.id)
-  const [myList,setMyList] = useState([])
+  const { songList } = useDetail(params.id);
+  const [myList, setMyList] = useState([]);
   useEffect(() => {
     dispatch(actions.goDetail(false));
-    const {tracks} = songList
-    setMyList(tracks)
   }, []);
+  useEffect(() => {
+    if (Object.keys(songList).length > 0) {
+      const { tracks } = songList;
+      setMyList((myList) => {
+        return tracks.map((item) => {
+          return {
+            title: item.name,
+            singer: item.ar[0].name,
+            album: item.al.name,
+          };
+        });
+      });
+    }
+  }, [songList]);
   const columns = [
     {
       title: "序号",
@@ -56,7 +70,7 @@ export default function Details(props) {
         </div>
       </div>
       <div className="music-table">
-        <Table columns={columns} />
+        <Table columns={columns} dataSource={myList} />
       </div>
     </div>
   );
