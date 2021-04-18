@@ -1,0 +1,110 @@
+.songDetail{
+    
+    padding: 30px;
+    .song-top{
+         display: flex;
+    .img-right{
+        margin-right: 20px;
+        .ant-image-img{
+            border-radius: 5px;
+        }
+    }
+    .song-left{
+       .title{
+           display: flex;
+           align-items: center;
+           margin-bottom: 10px;
+           div{
+               margin-right: 10px;
+               &:nth-child(1){
+                   height: 22px;
+                   color: #ec4141;
+                   border: 1px solid #ec4141;
+                   padding: 0px 5px;
+                   border-radius: 2px;
+               }
+               &:nth-child(2){
+                   font-size: 25px;
+                   font-weight: bold;
+
+               }
+           }
+       }
+       .time{
+           display: flex;
+           align-items: center;
+            margin-bottom: 10px;
+           .ant-image-img {
+               border-radius: 20px;
+           }
+           .auth-info {
+               margin-left: 10px;
+               color: #507daf;
+               span{
+                   margin-left: 10px;
+               }
+           }
+       }
+       .btn-group{
+           margin-bottom: 10px;
+           .ant-btn{
+               margin-right: 10px;
+               background-color: #fff;
+               color: #000;
+               border-color: #d8d8d8;
+               &:nth-child(1){
+                   background-color: #ec4141;
+                   border-color: #ec4141;
+                   color: #Fff;
+               }
+           }
+       }
+       .tips{
+           span{
+                color: #507daf;
+           }
+       }
+       .tips-song{
+           display: flex;
+           div{
+               &:nth-child(1){
+                   margin-right: 15px;
+               }
+           }
+       }
+    }
+}
+.song-tabs{
+    .ant-tabs-nav{
+        color: #000;
+        .ant-tabs-nav-wrap{
+            .ant-tabs-tab-active .ant-tabs-tab-btn {
+                color: #000 ;
+                font-weight: bold;
+            }
+            .ant-tabs-ink-bar{
+                background-color: #ec4141;
+                height: 4px;
+            }
+        }
+
+    }
+    .comment{
+        .c-item{
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            .anticon-smile{
+                font-size: 20px;
+            }
+        }
+        .comment-conent{
+            h3{
+                font-weight: bold;
+            }
+            margin: 10px 0;
+        }
+    }
+}
+}

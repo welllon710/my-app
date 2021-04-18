@@ -4,6 +4,7 @@ import {
 } from "react";
 import request from '../api/request'
 import fontMusic from "../api/foundMusic.js";
+
 const requestList = async (datas) => {
   const {
     url,
@@ -27,7 +28,7 @@ const requestList = async (datas) => {
 
 }
 const useDashboard = (actived) => {
-  console.log('actived', actived);
+
   const [bannerList, setBannerList] = useState([]),
     [list, setList] = useState([]),
     [exclusive, setExclusive] = useState([]),
@@ -125,8 +126,8 @@ const useSongList = () => {
 }
 const useDetail = (id) => {
   const [songList, setSongList] = useState({})
+  const [comment, setComment] = useState({})
   useEffect(() => {
-    //获取标签
     requestList({
       ...fontMusic.songDetail,
       params: {
@@ -135,15 +136,45 @@ const useDetail = (id) => {
     }).then((res) => {
       setSongList(res.playlist)
     });
+    requestList({
+      ...fontMusic.commentList,
+      params: {
+        id
+      }
+    }).then(res => {
+      setComment({
+        comments: res.comments,
+        hotComments: res.hotComments
+      })
+    })
   }, [id])
   return {
-    songList
+    songList,
+    comment
   }
+}
+const useEveryDay = (cookie) => {
+  const [songList, setSongList] = useState([])
+    useEffect(() => {
+      requestList({
+        ...fontMusic.recommend,
+        params: {
+          cookie
+        }
+      }).then((res) => {
+        setSongList(res.data.dailySongs)
+
+      });
+    }, [cookie])
+   return {
+     songList
+   }
 }
 export {
   requestList,
   useDashboard,
   useSongList,
-  useDetail
+  useDetail,
+  useEveryDay
 
 }

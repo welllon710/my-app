@@ -4,7 +4,7 @@ import { Image } from "antd";
 import { CalendarOutlined } from "@ant-design/icons";
 import "./square-priture.scss";
 function Squarepriture(props) {
-  const { item, sty, curw, goDetails } = props;
+  const { item, sty, curw, goDetails, goEveryDay } = props;
   // const { picUrl } = item;
   return (
     <div
@@ -23,7 +23,7 @@ function Squarepriture(props) {
             onClick={() => goDetails(item.id)}
           />
         ) : (
-          <div className="every-day">
+          <div className="every-day" onClick={() => goEveryDay()}>
             <CalendarOutlined />
             <Image preview={false} src="/assets/bgc.png"></Image>
             <span className="data">{props.children}</span>

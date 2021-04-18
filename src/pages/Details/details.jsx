@@ -2,33 +2,36 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import actions from "../../redux/actions";
-import { Button, Radio, Table, Tag, Space } from "antd";
+import { Button, Radio, Table, Tag, Space, Image } from "antd";
 
 import { CaretRightOutlined } from "@ant-design/icons";
-import { useDetail } from "../../my-hooks/_request";
+import { useEveryDay } from "../../my-hooks/_request";
+import { CalendarOutlined } from "@ant-design/icons";
+import moment from "moment";
 import "./details.scss";
 export default function Details(props) {
   const {
     match: { params },
   } = props;
   const dispatch = useDispatch();
-  const { songList } = useDetail(params.id);
+  const { songList } = useEveryDay(sessionStorage.getItem('cookie'));
   const [myList, setMyList] = useState([]);
+  const [day] = useState(() => new Date().getDate());
   useEffect(() => {
     dispatch(actions.goDetail(false));
   }, []);
   useEffect(() => {
-    if (Object.keys(songList).length > 0) {
-      const { tracks } = songList;
-      setMyList((myList) => {
-        return tracks.map((item) => {
-          return {
-            title: item.name,
-            singer: item.ar[0].name,
-            album: item.al.name,
-          };
-        });
-      });
+    if (songList.length > 0) {
+       setMyList((myList) => {
+         return songList.map(item => {
+           return {
+             title: item.name,
+             singer: item.ar[0].name,
+             album: item.al.name,
+             time: moment(item.dt).format("MM:SS"),
+           };
+         });
+       });
     }
   }, [songList]);
   const columns = [
@@ -57,7 +60,10 @@ export default function Details(props) {
     <div className="music-details">
       <div className="music-recommend">
         <div className="top">
-          <img src="/assets/day.png" alt="" />
+          <div className="day-info">
+            <CalendarOutlined />
+            <span className="day">{day}</span>
+          </div>
           <div className="text">
             <h2>每日歌曲推荐</h2>
             <div>根据你的音乐口味生成,每天6:00更新</div>

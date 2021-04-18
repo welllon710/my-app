@@ -7,7 +7,26 @@
     .top{
         display: flex;
         align-items: center;
+        margin-bottom: 20px;
+        .day-info {
+            position: relative;
+            .anticon-calendar {
+                font-size: 100px;
+                color: #ec4141;
+                z-index: 10;
+            }
+            .day{
+                font-size: 30px;
+                color: #ec4141;
+                font-weight: bold;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -25%);
+            }
+        }
         .text{
+            margin-left: 30px;
             h2{
                 font-size: 25px;
                 font-weight: bold;
@@ -15,7 +34,6 @@
         }
     }
     .bottom{
-        margin-left: 20px;
         .ant-btn{
             background-color: #ec4141;
             color: #Fff;

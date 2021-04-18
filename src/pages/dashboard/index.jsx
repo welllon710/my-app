@@ -11,6 +11,7 @@ import pubsub from "pubsub-js";
 import FountMusic from "../FountMusic";
 import Friends from "../Friends";
 import Details from "../Details/details";
+import songDetail from "../Details/songDetail";
 const { Header, Footer, Sider, Content } = Layout;
 export default function Dashboard() {
   const isOpen = useSelector((state) => state.isOpen);
@@ -54,8 +55,11 @@ export default function Dashboard() {
               component={FountMusic}></Route>
             <Route path="/dashboard/friends" component={Friends}></Route>
             <Route
-              path="/dashboard/fount-music/:id"
+              path="/dashboard/fount-music/every-day"
               component={Details}></Route>
+            <Route
+              path="/dashboard/fount-music/detail/:id"
+              component={songDetail}></Route>
           </Switch>
           <Drawer
             className="drawer"

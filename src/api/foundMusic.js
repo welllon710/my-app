@@ -34,6 +34,18 @@ export default {
     songDetail: {
         url: '/playlist/detail',
         method: 'get'
+    },
+    //每日歌单详情
+    recommend:{
+        url: '/recommend/songs'
+    },
+    //歌单评论
+    commentList: {
+        url: '/comment/playlist'
+    },
+    //回复评论
+    replyComment: {
+        url: '/comment'
     }
 
 }

@@ -41,4 +41,17 @@ export default {
         return preStae;
     }
   },
+  userInfo(preStae = {}, action) {
+    const { type, data } = action;
+    switch (type) {
+      case "SAVE":
+        preStae = data;
+        return preStae;
+      case "DEL":
+        preStae = data;
+        return preStae;
+      default:
+        return preStae;
+    }
+  },
 };

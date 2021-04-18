@@ -20,8 +20,7 @@ export default memo(function Recommed() {
   const { bannerList, list, exclusive, NewSong, mvList } = useDashboard(true);
   const [currentW, width] = useWidth(); //动态长度22
   const newMusic_ = JSON.parse(JSON.stringify(mvList)); //不改变原数组
-  const [time] = useState(()=>new Date().getDate())
-  console.log('time',time);
+  const [time] = useState(() => new Date().getDate());
   let _newList = useMemo(() => {
     if (currentW <= 900) {
       newMusic_.splice(-1, 1);
@@ -46,9 +45,13 @@ export default memo(function Recommed() {
   let _newListLength = setMvList().length;
 
   const goDetail = useCallback((id) => {
-    //路由跳转
-    history.push(`/dashboard/fount-music/${id}`);
+    //推荐歌单详情
+    history.push(`/dashboard/fount-music/detail/${id}`);
   }, []);
+  const goEveryDay = useCallback(() => {
+    //每日歌单
+    history.push(`/dashboard/fount-music/every-day`);
+  });
   return (
     <div className="recommend">
       <MySwiper list={bannerList}></MySwiper>
@@ -58,7 +61,9 @@ export default memo(function Recommed() {
           <RightOutlined />
         </h2>
         <div className="list-box" style={{ width: currentW }}>
-          <SquarePriture sty={"2%"} curw={"18%"} goDetails={goDetail} >{time}</SquarePriture>
+          <SquarePriture sty={"2%"} curw={"18%"} goEveryDay={goEveryDay}>
+            {time}
+          </SquarePriture>
           {list.map((item, index) => {
             {
               return index + 2 === 5 ? (

@@ -1,0 +1,27 @@
+.comment-info {
+    display: flex;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #f4f4f4;
+    margin-top: 15px;
+    .ant-image-img {
+        border-radius: 20px;
+    }
+    .conent{
+        margin-left: 15px;
+        font-size: 13px;
+        width: 100%;
+        .auth-nama{
+            color: #507daf;
+        }
+        .my-com{}
+        .reply-com{
+            margin: 8px 0;
+            background-color: #f4f4f4;
+            padding: 5px 10px;
+            width: 100%;
+        }
+        .reply-time{
+            color: #9f9f9f;
+        }
+    }
+}

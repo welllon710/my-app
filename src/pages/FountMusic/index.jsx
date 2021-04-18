@@ -25,7 +25,6 @@ export default function FoundMusic() {
   const componentsRender = (i) => {
     switch (i) {
       case 0:
-        console.log("count", count, i);
         return <Recommed />;
       case 1:
         return <SongList />;
@@ -40,10 +39,8 @@ export default function FoundMusic() {
     }
   };
   const cllback = (key, event) => {
-    console.log("key", key);
     switch (Number(key)) {
       case 0:
-        console.log("点我了吧");
         setState(true);
         break;
     }
