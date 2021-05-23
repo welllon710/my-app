@@ -1,4 +1,4 @@
-import React, { useState, useMemo ,useEffect} from "react";
+import React, { useState, useMemo ,useEffect, useRef} from "react";
 import { Input, Avatar, Modal, Form, Button, message, Popover } from "antd";
 import {
   ArrowLeftOutlined,
@@ -9,11 +9,17 @@ import {
   BulbOutlined,
 } from "@ant-design/icons";
 import QRCode from "qrcode.react";
-import { requestList } from "../../my-hooks/_request.js";
 import Apl_login from "../../api/login.js";
 import { useDispatch, useSelector } from "react-redux";
+import { useRequest, useDebounce } from "ahooks";
+import { requestList } from "../../my-hooks/_request.js";
+import useUrlState from "@ahooksjs/use-url-state";
 import actions from "../../redux/actions";
+
+import { HeaderSearch } from "../../components/HeaderSearch";
 import "./index.scss";
+import foundMusic from "../../api/foundMusic.js";
+
 export default function Header() {
   const { Search } = Input;
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -23,26 +29,37 @@ export default function Header() {
   const [mode, setMode] = useState(true);
   const [loading, setLoading] = useState(false);
   const [isSignin, setIsSignin] = useState(false);
+  const [timesOut, setTimesOut] = useState(null);
   const dispatch = useDispatch();
+  const [keyword, setKeyword] = useUrlState({ keyword: "" });
+  const { data, run, params } = useRequest(
+    (p) => ({ ...foundMusic.search, params: { keywords: p } }),
+    {
+      manual: true,
+      debounceInterval: 1000,
+      requestMethod: (param) => requestList(param),
+    }
+  );
   let userInfo = useSelector((state) => state.userInfo);
+
   let isLogin = useMemo(() => {
     if (userInfo === null) {
       userInfo = {};
     }
-        if (Object.keys(userInfo).length === 0) {
-          return false;
-        } else {
-          return userInfo;
-        }
-  }, [userInfo])
+    if (Object.keys(userInfo).length === 0) {
+      return false;
+    } else {
+      return userInfo;
+    }
+  }, [userInfo]);
+  let timeOut;
   //轮询二维码接口
-  let timeOut = null;
   useEffect(() => {
     if (mode && isModalVisible) {
       if (key == "") return;
-       timeOut = setInterval(async () => {
+      timeOut = setInterval(async () => {
+        setTimesOut(timeOut);
         let timestamp = new Date().getTime();
-        console.log("time", time);
         const res = await requestList({
           ...Apl_login.qrCheck,
           params: { key, time: timestamp },
@@ -74,12 +91,27 @@ export default function Header() {
             break;
         }
       }, 3000);
+
       return () => {
         clearInterval(timeOut);
       };
     }
-  }, [key, mode]);
-  const onSearch = () => {};
+  }, [key, mode, isModalVisible]);
+
+  const onSearch = (data) => {
+    setKeyword((pre) => {
+      pre.keyword = data;
+      run(pre.keyword);
+      return pre;
+    });
+  };
+  const onChange = (e) => {
+    setKeyword((pre) => {
+       pre.keyword = e.target.value;
+       return pre;
+    });
+     run(e.target.value);
+  };
   //登录弹出
   const showModal = async () => {
     setIsModalVisible(true);
@@ -100,9 +132,9 @@ export default function Header() {
     }
   };
 
-  const handleCancel = () => {
+  const handleCancel = (data) => {
     setIsModalVisible(false);
-    clearInterval(timeOut);
+    clearInterval(data);
   };
   //二维码登录
   const qrLogin = () => {
@@ -135,7 +167,7 @@ export default function Header() {
     //提交
     const onFinish = async (values) => {
       setLoading(true);
-      console.log("Success:", values);
+
       const { phone, password } = values;
       const res = await requestList({
         ...Apl_login.phoneLogin,
@@ -150,12 +182,10 @@ export default function Header() {
         setIsModalVisible(false);
       } else if (res.code === 502) {
         message.error("账号或密码错误");
-         setLoading(false);
+        setLoading(false);
       }
     };
-    const onFinishFailed = (errorInfo) => {
-      console.log("Failed:", errorInfo);
-    };
+    const onFinishFailed = (errorInfo) => {};
     return (
       <div className="normal">
         <img src="/assets/login.png" alt="" />
@@ -211,12 +241,15 @@ export default function Header() {
     </div>
   );
   const quitLogin = () => {
-    dispatch(actions.delUserInfo({}))
+    dispatch(actions.delUserInfo({}));
     sessionStorage.removeItem("cookie");
     message.success("退出成功");
   };
   const signin = async () => {
-    const res = await requestList({ ...Apl_login.signin, params: { cookie: sessionStorage.getItem('cookie')} });
+    const res = await requestList({
+      ...Apl_login.signin,
+      params: { cookie: sessionStorage.getItem("cookie") },
+    });
     if (res.code === 200) {
       setIsSignin(true);
     }
@@ -229,7 +262,7 @@ export default function Header() {
           <div className="fnc-cpm">
             <LeftCircleOutlined className="left-icon" />
             <RightCircleOutlined className="right-icon" />
-            <Search placeholder="搜索内容" onSearch={onSearch} />
+            <HeaderSearch onSearch={onSearch} onChange={onChange} />
           </div>
         </div>
         <div className="header-right">
@@ -240,9 +273,7 @@ export default function Header() {
             />
             {isLogin ? (
               <Popover placement="bottom" content={content} trigger="click">
-                <span className="user-status" >
-                  {isLogin.nickname}
-                </span>
+                <span className="user-status">{isLogin.nickname}</span>
               </Popover>
             ) : (
               <span className="user-status" onClick={showModal}>
@@ -256,10 +287,10 @@ export default function Header() {
       </div>
       {/* login */}
       <Modal
-        title={mode ? "扫码登录" : "账密登录"}
+        title={mode ? `扫码登录${timesOut}` : "账密登录"}
         visible={isModalVisible}
         footer={null}
-        onCancel={handleCancel}>
+        onCancel={() => handleCancel(timesOut)}>
         {mode ? qrLogin() : normalLogin()}
       </Modal>
       {/* 个人信息 */}

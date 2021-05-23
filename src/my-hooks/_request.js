@@ -4,7 +4,10 @@ import {
 } from "react";
 import request from '../api/request'
 import fontMusic from "../api/foundMusic.js";
-
+import { useAsync } from './use-async';
+import {
+  useRequest
+} from 'ahooks';
 const requestList = async (datas) => {
   const {
     url,
@@ -28,13 +31,22 @@ const requestList = async (datas) => {
 
 }
 const useDashboard = (actived) => {
-
   const [bannerList, setBannerList] = useState([]),
     [list, setList] = useState([]),
     [exclusive, setExclusive] = useState([]),
     [NewSong, setNewSong] = useState([]),
     [mvList, setMvList] = useState([]),
     [state, setState] = useState(true)
+  
+//  const {
+//    data,
+//    error,
+//    loading
+//  } = useRequest(fontMusic.banner, {
+//    requestMethod: (param) => requestList(param)
+//  });  
+
+  
   useEffect(() => {
     if (!state) {
       return false

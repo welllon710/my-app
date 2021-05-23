@@ -46,6 +46,10 @@ export default {
     //回复评论
     replyComment: {
         url: '/comment'
+    },
+    //搜索
+    search: {
+        url: '/cloudsearch'
     }
 
 }
