@@ -4,7 +4,9 @@ import {
 } from "react";
 import request from '../api/request'
 import fontMusic from "../api/foundMusic.js";
-import { useAsync } from './use-async';
+import {
+  useAsync
+} from './use-async';
 import {
   useRequest
 } from 'ahooks';
@@ -37,16 +39,22 @@ const useDashboard = (actived) => {
     [NewSong, setNewSong] = useState([]),
     [mvList, setMvList] = useState([]),
     [state, setState] = useState(true)
-  
-//  const {
-//    data,
-//    error,
-//    loading
-//  } = useRequest(fontMusic.banner, {
-//    requestMethod: (param) => requestList(param)
-//  });  
 
-  
+  // const {
+  //   data,
+  //   error,
+  //   loading
+  // } = useRequest(fontMusic.banner, {
+  //   requestMethod: (param) => Promise.all([
+  //     requestList(fontMusic.banner),
+  //     requestList(fontMusic.personalized),
+  //     requestList(fontMusic.privatecontent),
+  //     requestList(fontMusic.personalizedNewsong),
+  //     requestList(fontMusic.personalizedMv)
+  //   ])
+  // });
+  // console.log('data', data);
+
   useEffect(() => {
     if (!state) {
       return false
@@ -167,20 +175,20 @@ const useDetail = (id) => {
 }
 const useEveryDay = (cookie) => {
   const [songList, setSongList] = useState([])
-    useEffect(() => {
-      requestList({
-        ...fontMusic.recommend,
-        params: {
-          cookie
-        }
-      }).then((res) => {
-        setSongList(res.data.dailySongs)
+  useEffect(() => {
+    requestList({
+      ...fontMusic.recommend,
+      params: {
+        cookie
+      }
+    }).then((res) => {
+      setSongList(res.data.dailySongs)
 
-      });
-    }, [cookie])
-   return {
-     songList
-   }
+    });
+  }, [cookie])
+  return {
+    songList
+  }
 }
 export {
   requestList,
