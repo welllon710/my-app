@@ -1,4 +1,4 @@
-import React, { useState, useMemo ,useEffect, useRef} from "react";
+import React, { useState, useMemo, useEffect, useRef } from "react";
 import { Input, Avatar, Modal, Form, Button, message, Popover } from "antd";
 import {
   ArrowLeftOutlined,
@@ -107,10 +107,10 @@ export default function Header() {
   };
   const onChange = (e) => {
     setKeyword((pre) => {
-       pre.keyword = e.target.value;
-       return pre;
+      pre.keyword = e.target.value;
+      return pre;
     });
-     run(e.target.value);
+    run(e.target.value);
   };
   //登录弹出
   const showModal = async () => {
@@ -193,18 +193,21 @@ export default function Header() {
           {...layout}
           name="basic"
           onFinish={onFinish}
-          onFinishFailed={onFinishFailed}>
+          onFinishFailed={onFinishFailed}
+        >
           <Form.Item
             label="手机号"
             name="phone"
-            rules={[{ required: true, message: "请输入手机号" }]}>
+            rules={[{ required: true, message: "请输入手机号" }]}
+          >
             <Input />
           </Form.Item>
 
           <Form.Item
             label="密码"
             name="password"
-            rules={[{ required: true, message: "请输入密码" }]}>
+            rules={[{ required: true, message: "请输入密码" }]}
+          >
             <Input.Password />
           </Form.Item>
 
@@ -228,14 +231,16 @@ export default function Header() {
         shape="round"
         icon={<BulbOutlined />}
         onClick={() => signin()}
-        disabled={isSignin}>
+        disabled={isSignin}
+      >
         {isSignin ? "已签到" : "签到"}
       </Button>
       <Button
         type="primary"
         shape="round"
         icon={<BulbOutlined />}
-        onClick={() => quitLogin()}>
+        onClick={() => quitLogin()}
+      >
         退出登录
       </Button>
     </div>
@@ -262,7 +267,11 @@ export default function Header() {
           <div className="fnc-cpm">
             <LeftCircleOutlined className="left-icon" />
             <RightCircleOutlined className="right-icon" />
-            <HeaderSearch onSearch={onSearch} onChange={onChange} />
+            <HeaderSearch
+              onSearch={onSearch}
+              onChange={onChange}
+              value={keyword}
+            />
           </div>
         </div>
         <div className="header-right">
@@ -290,7 +299,8 @@ export default function Header() {
         title={mode ? `扫码登录${timesOut}` : "账密登录"}
         visible={isModalVisible}
         footer={null}
-        onCancel={() => handleCancel(timesOut)}>
+        onCancel={() => handleCancel(timesOut)}
+      >
         {mode ? qrLogin() : normalLogin()}
       </Modal>
       {/* 个人信息 */}

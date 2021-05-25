@@ -1,8 +1,7 @@
-
 import { Input } from "antd";
-import './index.scss'
-import { useState } from 'react';
-export const HeaderSearch = ({ onSearch, onChange }) => {
+import "./index.scss";
+import { useState } from "react";
+export const HeaderSearch = ({ onSearch, onChange, value }) => {
   const { Search } = Input;
   const [isShow, setIsShow] = useState(false);
   return (
@@ -11,6 +10,7 @@ export const HeaderSearch = ({ onSearch, onChange }) => {
         placeholder="搜索内容"
         onSearch={onSearch}
         className="search"
+        value={value.keyword}
         onChange={onChange}
         onFocus={() => setIsShow(true)}
         onBlur={() => setIsShow(false)}
