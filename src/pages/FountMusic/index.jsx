@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Tabs } from "antd";
 import "./index.scss";
 
-import Recommed from "../FountMusic/recommend";
-import SongList from "../FountMusic/songList/songList";
+import { Recommed } from "../FountMusic/recommend";
+import { SongList } from "../FountMusic/songList/songList";
 import Redio from "../FountMusic/redio/redio";
 import Rank from "../FountMusic/rank/rank";
 import Singer from "../FountMusic/singer/singer";
 import NewMusic from "../FountMusic/newMusic/newMusic";
-import { useDashboard } from "../../my-hooks/_request";
+
+import { useDashboard, useSongList } from "../../my-hooks/_request.js";
 const { TabPane } = Tabs;
 
 export default function FoundMusic() {
@@ -21,13 +22,15 @@ export default function FoundMusic() {
     "歌手",
     "最新音乐",
   ]);
-  const { setState } = useDashboard(false);
+  const [tags,setTags] = useState([])
+  const { run, refresh } = useDashboard();
+  const { runSong, refreshSong, tabs } = useSongList();
   const componentsRender = (i) => {
     switch (i) {
       case 0:
-        return <Recommed />;
+        return <Recommed run={run} />;
       case 1:
-        return <SongList />;
+        return <SongList run={runSong} tabs={tags} />;
       case 2:
         return <Redio />;
       case 3:
@@ -41,10 +44,15 @@ export default function FoundMusic() {
   const cllback = (key, event) => {
     switch (Number(key)) {
       case 0:
-        setState(true);
+        refresh();
+      case 1:
+        const t =  tabs();
+        setTags(t.tags);
+        refreshSong();
         break;
     }
   };
+
   return (
     <div className="fount-music">
       <div className="tutu">

@@ -1,200 +1,105 @@
-import {
-  useState,
-  useEffect
-} from "react";
-import request from '../api/request'
+import { useState, useEffect } from "react";
+import request from "../api/request";
 import fontMusic from "../api/foundMusic.js";
-import {
-  useAsync
-} from './use-async';
-import {
-  useRequest
-} from 'ahooks';
+
+import { useRequest } from "ahooks";
 const requestList = async (datas) => {
-  const {
-    url,
-    method = 'get',
-    data,
-    params
-  } = datas
+  const { url, method = "get", data, params } = datas;
   const parasms = {
     url,
     method,
     data,
-    params
+    params,
+  };
+  if (method === "post") {
+    delete parasms.params;
   }
-  if (method === 'post') {
-    delete parasms.params
+  if (method === "get") {
+    delete parasms.data;
   }
-  if (method === 'get') {
-    delete parasms.data
-  }
-  return request(parasms)
-
-}
-const useDashboard = (actived) => {
-  const [bannerList, setBannerList] = useState([]),
-    [list, setList] = useState([]),
-    [exclusive, setExclusive] = useState([]),
-    [NewSong, setNewSong] = useState([]),
-    [mvList, setMvList] = useState([]),
-    [state, setState] = useState(true)
-
-  // const {
-  //   data,
-  //   error,
-  //   loading
-  // } = useRequest(fontMusic.banner, {
-  //   requestMethod: (param) => Promise.all([
-  //     requestList(fontMusic.banner),
-  //     requestList(fontMusic.personalized),
-  //     requestList(fontMusic.privatecontent),
-  //     requestList(fontMusic.personalizedNewsong),
-  //     requestList(fontMusic.personalizedMv)
-  //   ])
-  // });
-  // console.log('data', data);
-
-  useEffect(() => {
-    if (!state) {
-      return false
-    }
-    //请求轮播图
-    requestList(fontMusic.banner).then((res) => {
-      const {
-        banners
-      } = res;
-      setBannerList(banners);
-
-    });
-    //请求每日推荐
-    requestList(fontMusic.personalized).then((res) => {
-      const {
-        result
-      } = res;
-      setList(result);
-    });
-    //获取独家放送
-    requestList(fontMusic.privatecontent).then((res) => {
-      const {
-        result
-      } = res;
-      setExclusive(result);
-
-    });
-    //获取最新音乐
-    requestList(fontMusic.personalizedNewsong).then((res) => {
-      const {
-        result
-      } = res;
-      setNewSong(result);
-
-    });
-    //获取推荐MV
-    requestList(fontMusic.personalizedMv).then((res) => {
-      const {
-        result
-      } = res;
-      setMvList(result);
-
-    });
-
-  }, [state]);
+  return request(parasms);
+};
+const useDashboard = () => {
+  const { run, refresh } = useRequest("", {
+    manual: true,
+    requestMethod: (param) =>
+      Promise.all([
+        requestList(fontMusic.banner), //请求轮播图
+        requestList(fontMusic.personalized), //请求每日推荐
+        requestList(fontMusic.privatecontent), //获取独家放送
+        requestList(fontMusic.personalizedNewsong), //获取最新音乐
+        requestList(fontMusic.personalizedMv), //获取推荐MV
+      ]),
+  });
   return {
-    bannerList,
-    list,
-    exclusive,
-    NewSong,
-    mvList,
-    setState
-  }
-}
+    run,
+    refresh,
+  };
+};
 
 const useSongList = () => {
-  const [tabs, setTabs] = useState([]),
-    [songLists, setSongLists] = useState(null), //
-    [catVal, setCatVal] = useState('全部'), //分类
-    [before, setBefore] = useState('') //上下页
-  useEffect(() => {
-    //获取标签
-    requestList(fontMusic.playlistHot).then((res) => {
-      const {
-        tags
-      } = res;
-      setTabs(tags)
-    });
-  }, [])
-  useEffect(() => {
-    //获取全部歌单
-    requestList({
-      ...fontMusic.highquality,
-      params: {
-        cat: catVal,
-        before
-      }
-    }).then((res) => {
-      setSongLists(res)
-
-    });
-  }, [catVal])
+  const { run, refresh } = useRequest((p) => p, {
+    manual: true,
+    requestMethod: (param) =>
+      requestList({
+        ...fontMusic.highquality,
+        params: {
+          cat: param,
+        },
+      }), //获取全部歌单
+  });
+  const { data } = useRequest("", {
+    requestMethod: (param) => requestList(fontMusic.playlistHot),
+  });
   return {
-    tabs,
-    songLists,
-    setCatVal,
-    setBefore
-  }
-}
+    runSong: run,
+    refreshSong: refresh,
+    tabs: () => data,
+  };
+};
 const useDetail = (id) => {
-  const [songList, setSongList] = useState({})
-  const [comment, setComment] = useState({})
+  const [songList, setSongList] = useState({});
+  const [comment, setComment] = useState({});
   useEffect(() => {
     requestList({
       ...fontMusic.songDetail,
       params: {
-        id
-      }
+        id,
+      },
     }).then((res) => {
-      setSongList(res.playlist)
+      setSongList(res.playlist);
     });
     requestList({
       ...fontMusic.commentList,
       params: {
-        id
-      }
-    }).then(res => {
+        id,
+      },
+    }).then((res) => {
       setComment({
         comments: res.comments,
-        hotComments: res.hotComments
-      })
-    })
-  }, [id])
+        hotComments: res.hotComments,
+      });
+    });
+  }, [id]);
   return {
     songList,
-    comment
-  }
-}
+    comment,
+  };
+};
 const useEveryDay = (cookie) => {
-  const [songList, setSongList] = useState([])
+  const [songList, setSongList] = useState([]);
   useEffect(() => {
     requestList({
       ...fontMusic.recommend,
       params: {
-        cookie
-      }
+        cookie,
+      },
     }).then((res) => {
-      setSongList(res.data.dailySongs)
-
+      setSongList(res.data.dailySongs);
     });
-  }, [cookie])
+  }, [cookie]);
   return {
-    songList
-  }
-}
-export {
-  requestList,
-  useDashboard,
-  useSongList,
-  useDetail,
-  useEveryDay
-
-}
+    songList,
+  };
+};
+export { requestList, useDashboard, useSongList, useDetail, useEveryDay };
