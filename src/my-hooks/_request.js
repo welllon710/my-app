@@ -1,10 +1,20 @@
-import { useState, useEffect } from "react";
+import {
+  useState,
+  useEffect
+} from "react";
 import request from "../api/request";
 import fontMusic from "../api/foundMusic.js";
 
-import { useRequest } from "ahooks";
+import {
+  useRequest
+} from "ahooks";
 const requestList = async (datas) => {
-  const { url, method = "get", data, params } = datas;
+  const {
+    url,
+    method = "get",
+    data,
+    params
+  } = datas;
   const parasms = {
     url,
     method,
@@ -20,7 +30,10 @@ const requestList = async (datas) => {
   return request(parasms);
 };
 const useDashboard = () => {
-  const { run, refresh } = useRequest("", {
+  const {
+    run,
+    refresh
+  } = useRequest("", {
     manual: true,
     requestMethod: (param) =>
       Promise.all([
@@ -38,7 +51,10 @@ const useDashboard = () => {
 };
 
 const useSongList = () => {
-  const { run, refresh } = useRequest((p) => p, {
+  const {
+    run,
+    refresh
+  } = useRequest((p) => p, {
     manual: true,
     requestMethod: (param) =>
       requestList({
@@ -48,7 +64,9 @@ const useSongList = () => {
         },
       }), //获取全部歌单
   });
-  const { data } = useRequest("", {
+  const {
+    data
+  } = useRequest("", {
     requestMethod: (param) => requestList(fontMusic.playlistHot),
   });
   return {
@@ -57,34 +75,25 @@ const useSongList = () => {
     tabs: () => data,
   };
 };
-const useDetail = (id) => {
-  const [songList, setSongList] = useState({});
-  const [comment, setComment] = useState({});
-  useEffect(() => {
-    requestList({
-      ...fontMusic.songDetail,
-      params: {
-        id,
-      },
-    }).then((res) => {
-      setSongList(res.playlist);
-    });
-    requestList({
-      ...fontMusic.commentList,
-      params: {
-        id,
-      },
-    }).then((res) => {
-      setComment({
-        comments: res.comments,
-        hotComments: res.hotComments,
-      });
-    });
-  }, [id]);
+const useDetail = (params) => {
+  const {
+    data
+  } = useRequest('', {
+    requestMethod: p => Promise.all([
+      requestList({
+        ...fontMusic.songDetail,
+        params
+      }),
+      requestList({
+        ...fontMusic.commentList,
+        params
+      })
+    ])
+  })
   return {
-    songList,
-    comment,
-  };
+    fnDetail: () => data
+  }
+
 };
 const useEveryDay = (cookie) => {
   const [songList, setSongList] = useState([]);
@@ -102,4 +111,10 @@ const useEveryDay = (cookie) => {
     songList,
   };
 };
-export { requestList, useDashboard, useSongList, useDetail, useEveryDay };
+export {
+  requestList,
+  useDashboard,
+  useSongList,
+  useDetail,
+  useEveryDay
+};
