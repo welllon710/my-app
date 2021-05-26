@@ -17,45 +17,15 @@ export default function SongDetail(props) {
     match: { params },
   } = props;
   const dispatch = useDispatch();
-  const [lists, setLists] = useState({
-    songList: {},
-    comment: {},
-  });
-  const { fnDetail } = useDetail({ id: params.id });
 
-  const [myList, setMyList] = useState([]);
+  const { lists } = useDetail({ id: params.id });
   const [value, setValue] = useState("");
-  const [comList, setComList] = useState([1, 2, 3, 4, 5]);
-  let c = fnDetail();
 
   useEffect(() => {
     dispatch(actions.goDetail(false));
-    if (c) {
-      setLists((pre) => {
-        return {
-          ...pre,
-          songList: c[0].playlist,
-          comment: c[1],
-        };
-      });
-    }
-  }, [c && c.length]);
-
-  useEffect(() => {
-    if (Object.keys(lists.songList).length > 0) {
-      const { tracks } = lists.songList;
-      setMyList((myList) => {
-        return tracks.map((item) => {
-          return {
-            title: item.name,
-            singer: item.ar[0].name,
-            album: item.al.name,
-            time: moment(item.dt).format("MM:SS"),
-          };
-        });
-      });
-    }
   }, []);
+
+
   const columns = [
     {
       title: "序号",
@@ -64,18 +34,22 @@ export default function SongDetail(props) {
     {
       title: "音乐标题",
       dataIndex: "title",
+      render: (text, record, index) => record.name,
     },
     {
       title: "歌手",
       dataIndex: "singer",
+      render: (text, record, index) => record.ar[0].name,
     },
     {
       title: "专辑",
       dataIndex: "album",
+      render: (text, record, index) => record.al.name,
     },
     {
       title: "时长",
       dataIndex: "time",
+      render: (text, record, index) => moment(record.dt).format("MM:SS"),
     },
   ];
   const commentList = (data) => {
@@ -163,12 +137,11 @@ export default function SongDetail(props) {
       <div className="song-tabs">
         <Tabs defaultActiveKey="1">
           <TabPane tab="歌曲列表" key="1">
-            <Table columns={columns} dataSource={myList} />;
+            <Table columns={columns} dataSource={lists.songList.tracks} />;
           </TabPane>
           <TabPane
             tab={"评论" + "(" + lists.songList.commentCount + ")"}
-            key="2"
-          >
+            key="2">
             <div className="comment">
               <TextArea
                 value={value}

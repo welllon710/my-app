@@ -12,7 +12,7 @@ import QRCode from "qrcode.react";
 import Apl_login from "../../api/login.js";
 import { useDispatch, useSelector } from "react-redux";
 import { useRequest, useDebounce } from "ahooks";
-import { requestList } from "../../my-hooks/_request.js";
+import { requestList,useHot } from "../../my-hooks/_request.js";
 import useUrlState from "@ahooksjs/use-url-state";
 import actions from "../../redux/actions";
 
@@ -40,6 +40,8 @@ export default function Header() {
       requestMethod: (param) => requestList(param),
     }
   );
+  // 分界线
+  const { lists } = useHot();
   let userInfo = useSelector((state) => state.userInfo);
 
   let isLogin = useMemo(() => {
@@ -271,6 +273,7 @@ export default function Header() {
               onSearch={onSearch}
               onChange={onChange}
               value={keyword}
+              hot={lists}
             />
           </div>
         </div>
@@ -299,8 +302,7 @@ export default function Header() {
         title={mode ? `扫码登录${timesOut}` : "账密登录"}
         visible={isModalVisible}
         footer={null}
-        onCancel={() => handleCancel(timesOut)}
-      >
+        onCancel={() => handleCancel(timesOut)}>
         {mode ? qrLogin() : normalLogin()}
       </Modal>
       {/* 个人信息 */}

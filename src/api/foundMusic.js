@@ -50,6 +50,10 @@ export default {
     //搜索
     search: {
         url: '/cloudsearch'
+    },
+    //热搜
+    hotSearch: {
+        url: '/search/hot/detail'
     }
 
 }

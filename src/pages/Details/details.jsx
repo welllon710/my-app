@@ -14,26 +14,14 @@ export default function Details(props) {
     match: { params },
   } = props;
   const dispatch = useDispatch();
-  const { songList } = useEveryDay(sessionStorage.getItem('cookie'));
-  const [myList, setMyList] = useState([]);
+  const { lists } = useEveryDay({
+    cookie: sessionStorage.getItem("cookie"),
+  });
   const [day] = useState(() => new Date().getDate());
   useEffect(() => {
     dispatch(actions.goDetail(false));
+   
   }, []);
-  useEffect(() => {
-    if (songList.length > 0) {
-       setMyList((myList) => {
-         return songList.map(item => {
-           return {
-             title: item.name,
-             singer: item.ar[0].name,
-             album: item.al.name,
-             time: moment(item.dt).format("MM:SS"),
-           };
-         });
-       });
-    }
-  }, [songList]);
   const columns = [
     {
       title: "序号",
@@ -42,18 +30,22 @@ export default function Details(props) {
     {
       title: "音乐标题",
       dataIndex: "title",
+      render: (text, record, index) => record.name,
     },
     {
       title: "歌手",
       dataIndex: "singer",
+      render: (text, record, index) => record.ar[0].name,
     },
     {
       title: "专辑",
       dataIndex: "album",
+      render: (text, record, index) => record.al.name,
     },
     {
       title: "时长",
       dataIndex: "time",
+      render: (text, record, index) => moment(record.dt).format("MM:SS"),
     },
   ];
   return (
@@ -76,7 +68,7 @@ export default function Details(props) {
         </div>
       </div>
       <div className="music-table">
-        <Table columns={columns} dataSource={myList} />
+        <Table columns={columns} dataSource={lists} />
       </div>
     </div>
   );
