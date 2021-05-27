@@ -1,0 +1,37 @@
+.singer-2 {
+    display: flex;
+    align-items: center;
+    height: 100px;
+    background-color: pink;
+    margin-bottom: 15px;
+    cursor: pointer;
+    .left{
+        height: 100%;
+        padding: 10px;
+        .ant-image{
+            img{
+                border-radius: 5px;
+            }
+        }
+    }
+    .right{
+        flex: 1;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 20px;
+        font-size: 17px;
+        .anticon-wifi{
+            color: #ec4141;
+        }
+    }
+    &:nth-of-type(odd){
+        background-color: #fff;
+    }
+    &:nth-of-type(even) {
+        background-color: #f9f9f9;
+    }
+    &:hover{
+         background-color: #f9f9f9;
+    }
+}

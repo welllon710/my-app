@@ -1,0 +1,38 @@
+.mv-2{
+    min-width: 340px;
+   min-height: 180px;
+    .mv-img{
+        position: relative;
+        //  min-width: 340px;
+        //  min-height: 180px;
+        .ant-image{
+            img{
+                border-radius: 8px;
+            }
+        }
+        .right-play{
+            position: absolute;
+            top: 0;
+            right: 10px;
+            color: #fff;
+            span{
+                padding: 0 2px;
+            }
+        }
+        .right-time{
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            color: #fff;
+        }
+    }
+    .mv-name{
+        font-size: 13px;
+        div{
+            color: #76c2eb;
+        }
+        p{
+            color: #cfcfcf;
+        }
+    }
+}

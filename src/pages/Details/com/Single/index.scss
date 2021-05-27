@@ -1,0 +1,27 @@
+.single{
+    .top{
+        margin-bottom: 20px;
+        .card{
+            .card-item{
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                height: 80px;
+                width: 400px;
+                background-color: #f4f4f4;
+                border-radius: 5px;
+                .left{
+                    height: 100%;
+                }
+                .right{
+                    flex: 1;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 0 15px;
+                    font-size: 18px;
+                }
+            }
+        }
+    }
+}
