@@ -12,13 +12,14 @@ import QRCode from "qrcode.react";
 import Apl_login from "../../api/login.js";
 import { useDispatch, useSelector } from "react-redux";
 import { useRequest, useDebounce } from "ahooks";
-import { requestList,useHot } from "../../my-hooks/_request.js";
+import { requestList, useHot } from "../../my-hooks/_request.js";
 import useUrlState from "@ahooksjs/use-url-state";
 import actions from "../../redux/actions";
 
 import { HeaderSearch } from "../../components/HeaderSearch";
 import "./index.scss";
 import foundMusic from "../../api/foundMusic.js";
+import { useHistory } from "react-router";
 
 export default function Header() {
   const { Search } = Input;
@@ -32,18 +33,24 @@ export default function Header() {
   const [timesOut, setTimesOut] = useState(null);
   const dispatch = useDispatch();
   const [keyword, setKeyword] = useUrlState({ keyword: "" });
-  const { data, run, params } = useRequest(
+  const [slists, setsLists] = useState([]);
+  const history = useHistory();
+  const { run, params, cancel } = useRequest(
     (p) => ({ ...foundMusic.search, params: { keywords: p } }),
     {
       manual: true,
       debounceInterval: 1000,
       requestMethod: (param) => requestList(param),
+      onSuccess: (data, params) => {
+        setsLists((pre) => {
+          return data.result.songs.filter((item, index) => index <= 5);
+        });
+      },
     }
   );
   // 分界线
   const { lists } = useHot();
   let userInfo = useSelector((state) => state.userInfo);
-
   let isLogin = useMemo(() => {
     if (userInfo === null) {
       userInfo = {};
@@ -103,7 +110,12 @@ export default function Header() {
   const onSearch = (data) => {
     setKeyword((pre) => {
       pre.keyword = data;
-      run(pre.keyword);
+      if (keyword.keyword) {
+        run(keyword.keyword);
+        history.push(`/fount-music/search-detail/${123}`);
+      } else {
+        cancel();
+      }
       return pre;
     });
   };
@@ -112,7 +124,12 @@ export default function Header() {
       pre.keyword = e.target.value;
       return pre;
     });
-    run(e.target.value);
+    if (keyword.keyword) {
+      run(keyword.keyword);
+    } else {
+      setsLists([]);
+      cancel();
+    }
   };
   //登录弹出
   const showModal = async () => {
@@ -274,6 +291,7 @@ export default function Header() {
               onChange={onChange}
               value={keyword}
               hot={lists}
+              searchCtt={slists}
             />
           </div>
         </div>
@@ -302,7 +320,8 @@ export default function Header() {
         title={mode ? `扫码登录${timesOut}` : "账密登录"}
         visible={isModalVisible}
         footer={null}
-        onCancel={() => handleCancel(timesOut)}>
+        onCancel={() => handleCancel(timesOut)}
+      >
         {mode ? qrLogin() : normalLogin()}
       </Modal>
       {/* 个人信息 */}

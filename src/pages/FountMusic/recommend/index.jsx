@@ -1,9 +1,4 @@
-import React, {
-  useState,
-  useMemo,
-  useEffect,
-  useCallback,
-} from "react";
+import React, { useState, useMemo, useEffect, useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import { RightOutlined } from "@ant-design/icons";
 import MySwiper from "../../../components/MySwiper";
@@ -13,7 +8,7 @@ import SmallPriture from "../../../components/picture/small-priture/small-pritur
 import { useWidth } from "../../../my-hooks/_width";
 
 import "./index.scss";
-export const Recommed = ({ run}) => {
+export const Recommed = ({ run }) => {
   const [lists, setLists] = useState({
     bannerList: [],
     list: [],
@@ -65,11 +60,11 @@ export const Recommed = ({ run}) => {
 
   const goDetail = useCallback((id) => {
     //推荐歌单详情
-    history.push(`/dashboard/fount-music/detail/${id}`);
+    history.push(`/fount-music/detail/${id}`);
   }, []);
   const goEveryDay = useCallback(() => {
     //每日歌单
-    history.push(`/dashboard/fount-music/every-day`);
+    history.push(`/fount-music/every-day`);
   });
   return (
     <div className="recommend">
@@ -151,7 +146,8 @@ export const Recommed = ({ run}) => {
                 item={item}
                 sty={"3%"}
                 curw={_newListLength === 3 ? "33%" : "22%"}
-                _length={_newListLength}></RectanglePriture>
+                _length={_newListLength}
+              ></RectanglePriture>
             );
           })}
         </div>

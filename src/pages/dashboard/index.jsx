@@ -12,6 +12,8 @@ import FountMusic from "../FountMusic";
 import Friends from "../Friends";
 import Details from "../Details/details";
 import songDetail from "../Details/songDetail";
+import { SearchDetail } from "../Details/searchDetail";
+
 const { Header, Footer, Sider, Content } = Layout;
 export default function Dashboard() {
   const isOpen = useSelector((state) => state.isOpen);
@@ -24,8 +26,7 @@ export default function Dashboard() {
   };
   useEffect(() => {
     history.listen((historyLocation) => {
-      console.log("historyLocation-----", historyLocation);
-      if (historyLocation.pathname === "/dashboard/fount-music") {
+      if (historyLocation.pathname === "/fount-music") {
         dispatchTop(actions.leaveDetail(true));
       }
     });
@@ -49,17 +50,17 @@ export default function Dashboard() {
         </Sider>
         <Content style={{ height: isD.height, marginTop: isD.marginTop }}>
           <Switch>
+            <Route exact path="/fount-music" component={FountMusic}></Route>
+            <Route path="/friends" component={Friends}></Route>
+            <Route path="/fount-music/every-day" component={Details}></Route>
             <Route
-              exact
-              path="/dashboard/fount-music"
-              component={FountMusic}></Route>
-            <Route path="/dashboard/friends" component={Friends}></Route>
+              path="/fount-music/detail/:id"
+              component={songDetail}
+            ></Route>
             <Route
-              path="/dashboard/fount-music/every-day"
-              component={Details}></Route>
-            <Route
-              path="/dashboard/fount-music/detail/:id"
-              component={songDetail}></Route>
+              path="/fount-music/search-detail/:id"
+              component={SearchDetail}
+            ></Route>
           </Switch>
           <Drawer
             className="drawer"
@@ -70,7 +71,8 @@ export default function Dashboard() {
             visible={isOpen}
             mask={false}
             width={500}
-            style={{ position: "absolute" }}>
+            style={{ position: "absolute" }}
+          >
             <p>Some contents...</p>
           </Drawer>
         </Content>

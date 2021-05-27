@@ -5,12 +5,12 @@ export default memo(function Sider() {
   const [list, setList] = useState([
     {
       id: 1,
-      path: "/dashboard/fount-music",
+      path: "/fount-music",
       name: "发现音乐",
     },
     {
       id: 2,
-      path: "/dashboard/friends",
+      path: "/friends",
       name: "朋友",
     },
   ]);
@@ -28,7 +28,8 @@ export default memo(function Sider() {
                 fontSize: "25px",
                 backgroundColor: "#f6f6f7",
               }}
-              to={item.path}>
+              to={item.path}
+            >
               {item.name}
             </NavLink>
           </div>

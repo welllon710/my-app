@@ -1,11 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
-import actions from "../../redux/actions";
-import { Button, Radio, Table, Tag, Space, Image } from "antd";
-
+import React, { useState } from "react";
+import { Button, Table } from "antd";
 import { CaretRightOutlined } from "@ant-design/icons";
 import { useEveryDay } from "../../my-hooks/_request";
+import { useHeight } from "../../my-hooks/useHeight";
 import { CalendarOutlined } from "@ant-design/icons";
 import moment from "moment";
 import "./details.scss";
@@ -13,15 +10,11 @@ export default function Details(props) {
   const {
     match: { params },
   } = props;
-  const dispatch = useDispatch();
+  useHeight();
   const { lists } = useEveryDay({
     cookie: sessionStorage.getItem("cookie"),
   });
   const [day] = useState(() => new Date().getDate());
-  useEffect(() => {
-    dispatch(actions.goDetail(false));
-   
-  }, []);
   const columns = [
     {
       title: "序号",

@@ -58,4 +58,30 @@
             }
         }
     }
+    .search-content{
+        .tips{
+            span{
+                color: #ec4141;
+            }
+        }
+        .song{
+            .top{
+                 .title{
+                    height: 30px;
+                    line-height: 30px;
+                 }
+                li{
+                    height: 30px;
+                     line-height: 30px;
+                     padding: 0 15px;
+                     cursor: pointer;
+                     &:hover{
+                         background-color: #f2f2f2;
+                     }
+                }
+            }
+           
+        }
+        
+    }
 } 

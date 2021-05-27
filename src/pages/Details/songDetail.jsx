@@ -1,11 +1,10 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useState } from "react";
 import { Image } from "antd";
-import { useDispatch } from "react-redux";
 import { Button, Table, Tabs, Input } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
 import { SmileOutlined } from "@ant-design/icons";
-import actions from "../../redux/actions";
 import { useDetail, requestList } from "../../my-hooks/_request";
+import { useHeight } from "../../my-hooks/useHeight";
 import Api_ from "../../api/foundMusic";
 import CommentItem from "../../components/comment/comment";
 import moment from "moment";
@@ -16,16 +15,9 @@ export default function SongDetail(props) {
   const {
     match: { params },
   } = props;
-  const dispatch = useDispatch();
-
+  useHeight();
   const { lists } = useDetail({ id: params.id });
   const [value, setValue] = useState("");
-
-  useEffect(() => {
-    dispatch(actions.goDetail(false));
-  }, []);
-
-
   const columns = [
     {
       title: "序号",
@@ -141,7 +133,8 @@ export default function SongDetail(props) {
           </TabPane>
           <TabPane
             tab={"评论" + "(" + lists.songList.commentCount + ")"}
-            key="2">
+            key="2"
+          >
             <div className="comment">
               <TextArea
                 value={value}

@@ -1,7 +1,13 @@
 import { Input } from "antd";
 import "./index.scss";
-import { useState } from "react";
-export const HeaderSearch = ({ onSearch, onChange, value, hot }) => {
+import { useEffect, useState } from "react";
+export const HeaderSearch = ({
+  onSearch,
+  onChange,
+  value,
+  hot,
+  searchCtt = [],
+}) => {
   const { Search } = Input;
   const [isShow, setIsShow] = useState(false);
   return (
@@ -15,8 +21,11 @@ export const HeaderSearch = ({ onSearch, onChange, value, hot }) => {
         onFocus={() => setIsShow(true)}
         onBlur={() => setIsShow(false)}
       />
-      {/* <Hot hot={hot} isShow={isShow} /> */}
-      <SearchContent/>
+      {!value.keyword ? (
+        <Hot hot={hot} isShow={isShow} />
+      ) : (
+        <SearchContent value={value} searchCtt={searchCtt} isShow={isShow} />
+      )}
     </div>
   );
 };
@@ -29,10 +38,11 @@ const Hot = ({ hot, isShow }) => {
         <h3>热搜榜</h3>
         <ul>
           {hot.map((item, index) => (
-            <li>
+            <li key={index}>
               <div
                 className="num"
-                style={{ color: index + 1 - 0 <= 3 ? "#ff3a3a" : "" }}>
+                style={{ color: index + 1 - 0 <= 3 ? "#ff3a3a" : "" }}
+              >
                 {index + 1 - 0}
               </div>
               <div className="li-content">
@@ -50,23 +60,25 @@ const Hot = ({ hot, isShow }) => {
     </div>
   ) : null;
 };
-const SearchContent = () => {
-  return (
-    <div className="content">
+const SearchContent = ({ value, searchCtt, isShow }) => {
+  return isShow ? (
+    <div className="content search-content">
       <div className="tips">
-        搜<span>光年之外</span>相关的结果
+        搜<span>{value.keyword}</span>相关的结果
       </div>
       <div className="song">
-        <div>
-          <div>单曲</div>
+        <div className="top">
+          <div className="title">单曲</div>
           <ul>
-            <li>
-              <span>光年之外-</span>G.E.M邓紫棋
-            </li>
+            {searchCtt.map((item) => (
+              <li key={item.id}>
+                <span>{item.name}</span>
+              </li>
+            ))}
           </ul>
         </div>
-        <div>
-          <div>专辑</div>
+        <div className="bottom top">
+          <div className="title">专辑</div>
           <ul>
             <li>
               <span>光年之外-</span>G.E.M邓紫棋
@@ -75,5 +87,5 @@ const SearchContent = () => {
         </div>
       </div>
     </div>
-  );
-}
+  ) : null;
+};
