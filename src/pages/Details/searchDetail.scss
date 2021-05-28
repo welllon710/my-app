@@ -1,5 +1,5 @@
 .search-detail{
-    padding: 30px 0 0 30px;
+    padding:30px;
    .top{
        .ant-tabs-nav-wrap{
             .ant-tabs-tab-active {
@@ -15,7 +15,7 @@
        }
        .mv-item{
            display: flex;
-           justify-content: space-between;
+        //    justify-content: space-between;
            flex-wrap: wrap;
        }
    }
