@@ -58,7 +58,7 @@ export default function Dashboard() {
               component={songDetail}
             ></Route>
             <Route
-              path="/fount-music/search-detail/:id"
+              path="/fount-music/search-detail"
               component={SearchDetail}
             ></Route>
           </Switch>

@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { Image, Table } from "antd";
 import { RightOutlined } from "@ant-design/icons";
 import moment from "moment";
 import './index.scss'
-export const Single = () => {
-    const  columns = [
+export const Single = memo(({ single }) => {
+  console.log("single", single);
+  const columns = [
     {
       title: "序号",
       render: (text, record, index) => `${index + 1}`,
@@ -30,20 +31,20 @@ export const Single = () => {
       render: (text, record, index) => moment(record.dt).format("MM:SS"),
     },
   ];
-    return (
-      <div className="single">
-        <div className="top">
-          <h3>最佳匹配</h3>
-          <div className="card">
-            <Card />
-          </div>
-        </div>
-        <div className="contnet">
-          <Table columns={columns} dataSource={[]} />
+  return (
+    <div className="single">
+      <div className="top">
+        <h3>最佳匹配</h3>
+        <div className="card">
+          <Card />
         </div>
       </div>
-    );
-}
+      <div className="contnet">
+        <Table columns={columns} dataSource={single.songs} />
+      </div>
+    </div>
+  );
+});
 const Card = ()=>{
     return (
       <div className="card-item">

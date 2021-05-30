@@ -3,7 +3,7 @@ import { Image } from "antd";
 import { useSize } from "ahooks";
 import { RightSquareOutlined } from "@ant-design/icons";
 import "./index.scss";
-export const Mv = ({ w }) => {
+export const Mv = ({ w, sty }) => {
   const ref = useRef();
   const size = useSize(ref);
   let h = useMemo(() => {
@@ -13,9 +13,8 @@ export const Mv = ({ w }) => {
   return (
     <div
       className="mv-2"
-      style={{ width: w, height: h + "px", marginRight: "20px" }}
-      ref={ref}
-    >
+      style={{ width: w, height: h + "px", marginRight: '1%' }}
+      ref={ref}>
       <div className="mv-img">
         <Image
           width={"100%"}

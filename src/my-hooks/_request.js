@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import request from "../api/request";
 import fontMusic from "../api/foundMusic.js";
-
+import useUrlState from "@ahooksjs/use-url-state";
 import { useRequest } from "ahooks";
 const requestList = async (datas) => {
   const { url, method = "get", data, params } = datas;
@@ -116,11 +116,47 @@ const useHot = () => {
   }
   
 }
+const useSearch = (isDetail = false, isD = true, pms = {}) => {
+  const [slists, setsLists] = useState([]);
+  const {
+    run,
+    cancel
+  } = useRequest(({
+        keyword,
+        type = 1
+      }) => ({
+    ...fontMusic.search,
+    params: {
+      keywords: keyword,
+      type: type
+    }
+  }), {
+    manual: true,
+    debounceInterval: isD?1000:200,
+    requestMethod: (param) => requestList({
+      ...param, ...pms
+    }),
+    onSuccess: (data, params) => {
+      setsLists((pre) => {
+        return isDetail ? data.result.songs.filter((item, index) => index <= 5) :
+           data.result
+       })
+    },
+  }
+    )
+  return {
+    run,
+    cancel,
+    slists,
+    setsLists
+  }
+}
 export {
   requestList,
   useDashboard,
   useSongList,
   useDetail,
   useEveryDay,
-  useHot
+  useHot,
+  useSearch
 };

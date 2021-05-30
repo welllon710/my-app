@@ -11,14 +11,11 @@ import {
 import QRCode from "qrcode.react";
 import Apl_login from "../../api/login.js";
 import { useDispatch, useSelector } from "react-redux";
-import { useRequest, useDebounce } from "ahooks";
-import { requestList, useHot } from "../../my-hooks/_request.js";
+import { requestList, useHot, useSearch } from "../../my-hooks/_request.js";
 import useUrlState from "@ahooksjs/use-url-state";
 import actions from "../../redux/actions";
-
 import { HeaderSearch } from "../../components/HeaderSearch";
 import "./index.scss";
-import foundMusic from "../../api/foundMusic.js";
 import { useHistory } from "react-router";
 
 export default function Header() {
@@ -33,21 +30,8 @@ export default function Header() {
   const [timesOut, setTimesOut] = useState(null);
   const dispatch = useDispatch();
   const [keyword, setKeyword] = useUrlState({ keyword: "" });
-  const [slists, setsLists] = useState([]);
   const history = useHistory();
-  const { run, params, cancel } = useRequest(
-    (p) => ({ ...foundMusic.search, params: { keywords: p } }),
-    {
-      manual: true,
-      debounceInterval: 1000,
-      requestMethod: (param) => requestList(param),
-      onSuccess: (data, params) => {
-        setsLists((pre) => {
-          return data.result.songs.filter((item, index) => index <= 5);
-        });
-      },
-    }
-  );
+  const { run,cancel, slists, setsLists } = useSearch(true);
   // 分界线
   const { lists } = useHot();
   let userInfo = useSelector((state) => state.userInfo);
@@ -111,8 +95,8 @@ export default function Header() {
     setKeyword((pre) => {
       pre.keyword = data;
       if (keyword.keyword) {
-        run(keyword.keyword);
-        history.push(`/fount-music/search-detail/${123}`);
+        console.log('点我');
+        history.push(`/fount-music/search-detail`);
       } else {
         cancel();
       }
@@ -125,7 +109,7 @@ export default function Header() {
       return pre;
     });
     if (keyword.keyword) {
-      run(keyword.keyword);
+      run({keyword:keyword.keyword});
     } else {
       setsLists([]);
       cancel();
