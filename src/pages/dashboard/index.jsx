@@ -13,9 +13,10 @@ import Friends from "../Friends";
 import Details from "../Details/details";
 import songDetail from "../Details/songDetail";
 import { SearchDetail } from "../Details/searchDetail";
-
+import { MvDetail } from "../Details/mvDetail";
 const { Header, Footer, Sider, Content } = Layout;
-export default function Dashboard() {
+export default function Dashboard(props) {
+  console.log("props", props);
   const isOpen = useSelector((state) => state.isOpen);
   let isDetails = useSelector((state) => state.isDetails);
   const dispatch = useDispatch();
@@ -24,8 +25,11 @@ export default function Dashboard() {
   const onClose = () => {
     dispatch(actions.close(false));
   };
+
   useEffect(() => {
+    
     history.listen((historyLocation) => {
+      console.log("historyLocation", historyLocation);
       if (historyLocation.pathname === "/fount-music") {
         dispatchTop(actions.leaveDetail(true));
       }
@@ -45,7 +49,11 @@ export default function Dashboard() {
         <Myheader></Myheader>
       </Header>
       <Layout>
-        <Sider>
+        <Sider
+          style={{
+            display:
+              history.location.pathname == "/fount-music/mv" ? "none" : "block",
+          }}>
           <Mysider></Mysider>
         </Sider>
         <Content style={{ height: isD.height, marginTop: isD.marginTop }}>
@@ -55,12 +63,11 @@ export default function Dashboard() {
             <Route path="/fount-music/every-day" component={Details}></Route>
             <Route
               path="/fount-music/detail/:id"
-              component={songDetail}
-            ></Route>
+              component={songDetail}></Route>
             <Route
               path="/fount-music/search-detail"
-              component={SearchDetail}
-            ></Route>
+              component={SearchDetail}></Route>
+            <Route path="/fount-music/mv/:id" name={'mv'} component={MvDetail}></Route>
           </Switch>
           <Drawer
             className="drawer"
@@ -71,13 +78,16 @@ export default function Dashboard() {
             visible={isOpen}
             mask={false}
             width={500}
-            style={{ position: "absolute" }}
-          >
+            style={{ position: "absolute" }}>
             <p>Some contents...</p>
           </Drawer>
         </Content>
       </Layout>
-      <Footer>
+      <Footer
+        style={{
+          display:
+            history.location.pathname == "/fount-music/mv" ? "none" : "block",
+        }}>
         <Plyaer />
       </Footer>
     </Layout>

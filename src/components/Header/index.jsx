@@ -266,7 +266,7 @@ export default function Header() {
     <>
       <div className="wyy-header">
         <div className="header-left">
-          <img src="/assets/wyylogo.jpg" alt="logo" />
+          <img src="/assets/wyylogo.jpg" alt="logo" onClick={() => history.push('/fount-music')} />
           <div className="fnc-cpm">
             <LeftCircleOutlined className="left-icon" />
             <RightCircleOutlined className="right-icon" />
@@ -304,8 +304,7 @@ export default function Header() {
         title={mode ? `扫码登录${timesOut}` : "账密登录"}
         visible={isModalVisible}
         footer={null}
-        onCancel={() => handleCancel(timesOut)}
-      >
+        onCancel={() => handleCancel(timesOut)}>
         {mode ? qrLogin() : normalLogin()}
       </Modal>
       {/* 个人信息 */}

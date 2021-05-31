@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo,useState } from "react";
 import { useHeight } from "../../my-hooks/useHeight";
 import { Single } from "./com/Single";
 import { Singer } from "./com/Singer";
@@ -9,10 +9,10 @@ import useUrlState from "@ahooksjs/use-url-state";
 import { Tabs } from "antd";
 import "./searchDetail.scss";
 const { TabPane } = Tabs;
-const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 export const SearchDetail = (props) => {
   const [keyword, setKeyword] = useUrlState({ keyword: "" });
-  const { slists, run } = useSearch(false, true);
+  const { slists, run } = useSearch(false, false);
+  const [active,setActive] = useState('1')
   useEffect(() => {
     if (keyword.keyword) {
       run({ keyword: keyword.keyword, type: 1 });
@@ -33,14 +33,15 @@ export const SearchDetail = (props) => {
   return (
     <div className="search-detail">
       <div className="top">
-        <h2>找到{slists.songCount}首单曲</h2>
-        <TopTabs w={w} slists={slists} run={run} keyword={keyword} />
+        <h2 style={{ display: active == '1'?'block':'none' }}>找到{slists.songCount}首单曲</h2>
+        <TopTabs w={w} slists={slists} run={run} keyword={keyword} setActive={ setActive}/>
       </div>
     </div>
   );
 };
-const TopTabs = ({ w, slists, run, keyword }) => {
+const TopTabs = ({ w, slists, run, keyword,setActive }) => {
   const callback = (val) => {
+    setActive(val);
     run({ keyword: keyword.keyword, type: val });
     console.log("slists", slists);
   };
@@ -50,21 +51,23 @@ const TopTabs = ({ w, slists, run, keyword }) => {
         <Single single={slists} />
       </TabPane>
       <TabPane tab="歌手" key="100">
-        {slists.artistCount}
-        {slists.artists && slists.artists.map((item) => (
-          <Singer />
-        ))}
+        {slists.artists &&
+          slists.artists.map((item) => <Singer key={item.id} item={item} />)}
       </TabPane>
       <TabPane tab="专辑" key="10">
-        <Singer isS={true}>
-          <div>你好</div>
-        </Singer>
+        {slists.albums &&
+          slists.albums.map((item) => (
+            <Singer key={item.id} item={item} isS={true}>
+              <div>{item.artist.name}</div>
+            </Singer>
+          ))}
       </TabPane>
       <TabPane tab="视频" key="1004">
         <div className="mv-item">
-          {arr.map((item, index) => {
-            return <Mv w={w} />;
-          })}
+          {slists.mvs &&
+            slists.mvs.map((item, index) => {
+              return <Mv w={w} item={item} key={item.id} />;
+            })}
         </div>
       </TabPane>
     </Tabs>

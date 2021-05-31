@@ -9,6 +9,7 @@
         .ant-image{
             img{
                 border-radius: 8px;
+                cursor: pointer;
             }
         }
         .right-play{
@@ -28,6 +29,7 @@
         }
     }
     .mv-name{
+        cursor: pointer;
         font-size: 13px;
         div{
             color: #76c2eb;

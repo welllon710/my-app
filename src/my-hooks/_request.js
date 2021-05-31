@@ -132,7 +132,7 @@ const useSearch = (isDetail = false, isD = true, pms = {}) => {
     }
   }), {
     manual: true,
-    debounceInterval: isD?1000:200,
+    debounceInterval: isD?1000:50,
     requestMethod: (param) => requestList({
       ...param, ...pms
     }),
