@@ -16,20 +16,18 @@ import { SearchDetail } from "../Details/searchDetail";
 import { MvDetail } from "../Details/mvDetail";
 const { Header, Footer, Sider, Content } = Layout;
 export default function Dashboard(props) {
-  console.log("props", props);
   const isOpen = useSelector((state) => state.isOpen);
   let isDetails = useSelector((state) => state.isDetails);
   const dispatch = useDispatch();
   const dispatchTop = useDispatch();
   const history = useHistory();
+  const rxp = /\/\w+\-\w+\/[mv]+\//;
   const onClose = () => {
     dispatch(actions.close(false));
   };
-
+  
   useEffect(() => {
-    
     history.listen((historyLocation) => {
-      console.log("historyLocation", historyLocation);
       if (historyLocation.pathname === "/fount-music") {
         dispatchTop(actions.leaveDetail(true));
       }
@@ -51,8 +49,7 @@ export default function Dashboard(props) {
       <Layout>
         <Sider
           style={{
-            display:
-              history.location.pathname == "/fount-music/mv" ? "none" : "block",
+            display: rxp.test(history.location.pathname) ? "none" : "block",
           }}>
           <Mysider></Mysider>
         </Sider>
@@ -67,7 +64,10 @@ export default function Dashboard(props) {
             <Route
               path="/fount-music/search-detail"
               component={SearchDetail}></Route>
-            <Route path="/fount-music/mv/:id" name={'mv'} component={MvDetail}></Route>
+            <Route
+              path="/fount-music/mv/:id"
+              name={"mv"}
+              component={MvDetail}></Route>
           </Switch>
           <Drawer
             className="drawer"
@@ -85,8 +85,7 @@ export default function Dashboard(props) {
       </Layout>
       <Footer
         style={{
-          display:
-            history.location.pathname == "/fount-music/mv" ? "none" : "block",
+          display: rxp.test(history.location.pathname) ? "none" : "block",
         }}>
         <Plyaer />
       </Footer>

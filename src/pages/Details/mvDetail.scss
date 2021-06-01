@@ -1,0 +1,107 @@
+.mv-detail{
+    display: flex;
+    justify-content: center;
+    .mv-box{
+        width: 65%;
+        min-width: 1100px;
+         display: flex;
+           padding: 15px 0;
+        // justify-content: space-between;
+        .left{
+            flex: 2;
+            h3{
+                margin: 0;
+                padding-left: 8px;
+                font-weight: bold;
+                
+            }
+            .title{
+                display: flex;
+                align-items: center;
+                margin-bottom: 15px;
+            }
+        }
+        .mv-video{
+            video{
+                min-height: 400px;
+                min-width: 700px;
+            }
+        }
+        .singer-info{
+            display: flex;
+            align-items: center;
+            padding: 20px 0;
+            img{
+                border-radius: 30px;
+            }
+            span{
+                margin-left: 10px;
+            }
+        }
+        .song-info{
+            h1{
+                font-size: 30px;
+                font-weight: bold;
+            }
+            .second {
+                margin-bottom: 12px;
+                span{
+                    margin-right: 10px;
+                    color: #cfcfcf;
+                    font-size: 12px;
+                }
+            }
+            .third{
+                margin-bottom: 20px;
+            }
+        }
+        .right{
+            flex: 1;
+            h3{
+                font-weight: bold;
+                 margin: 0;
+                  margin-bottom: 15px;
+            }
+            .mv-card{
+                width: 80%;
+                min-width:350px;
+                // height: 100px;
+                display: flex;
+                margin-bottom: 10px;
+                img{
+                    border-radius: 5px;
+                }
+                .card-left{
+                    position: relative;
+                    .card-play {
+                          position: absolute;
+                          top: 0;
+                          right: 10px;
+                          color: #fff;
+                          span {
+                              padding: 0 2px;
+                          }
+                    }
+                     .card-time {
+                         position: absolute;
+                         bottom: 10px;
+                         right: 10px;
+                         color: #fff;
+                     }
+                }
+                .card-right{
+                    font-size: 13px;
+                    margin-left: 10px;
+                    color: #a3a3a3;
+                    p{
+                        color: #000;
+                        display: -webkit-box;
+                        -webkit-box-orient: vertical;
+                        -webkit-line-clamp: 2;
+                        overflow: hidden;
+                    }
+                }
+            }
+        }
+    }
+}
