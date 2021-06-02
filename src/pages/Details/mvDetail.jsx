@@ -1,19 +1,28 @@
-import react from "react";
+import react, { useState } from "react";
 import {
   LeftOutlined,
   RightSquareOutlined,
   DownloadOutlined,
+  SmileOutlined,
 } from "@ant-design/icons";
 import { useHeight } from "../../my-hooks/useHeight";
-import { Image, Tag, Button } from "antd";
+import CommentItem from "../../components/comment/comment";
+import { Image, Tag, Button, Input } from "antd";
 import "./mvDetail.scss";
+import { useHistory } from "react-router";
+const { TextArea } = Input;
 export const MvDetail = () => {
+  const [textValue, setTextValue] = useState("");
   useHeight();
+  const history = useHistory()
+  const onChange = ({ target: { value } }) => {
+      setTextValue(value);
+  };
   return (
     <div className="mv-detail">
       <div className="mv-box">
         <div className="left">
-          <div className="title">
+          <div className="title" onClick={()=>history.push('/fount-music') }>
             <LeftOutlined />
             <h3>MV详情</h3>
           </div>
@@ -31,7 +40,7 @@ export const MvDetail = () => {
           </div>
           <div className="song-info">
             <h1>光年之外</h1>
-                      <div className="second" >
+            <div className="second">
               <span>发布:2016-12-30</span>
               <span>播放:2222万</span>
             </div>
@@ -41,13 +50,31 @@ export const MvDetail = () => {
               <Tag color="magenta">音乐</Tag>
             </div>
             <div className="fourth">
-              <Button
-                type="primary"
-                shape="round"
-                icon={<DownloadOutlined />}
-                >
+              <Button type="primary" shape="round" icon={<DownloadOutlined />}>
                 Download
               </Button>
+            </div>
+          </div>
+          <div className="comment">
+            <div className="c-t">
+              <h2>评论</h2>
+              <span>(7629)</span>
+            </div>
+            <TextArea
+              value={textValue}
+              onChange={onChange}
+              placeholder="请输入评论"
+              autoSize={{ minRows: 3, maxRows: 5 }}
+            />
+            <div className="c-item">
+              <SmileOutlined />
+              <Button>评论</Button>
+            </div>
+            <div className="comment-conent">
+              {/* {lists.comment.comments
+                ? commentList(lists.comment.comments)
+                : ""} */}
+              {/* <CommentItem /> */}
             </div>
           </div>
         </div>

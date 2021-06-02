@@ -16,10 +16,58 @@
         position: relative;
        /deep/ .drawer {
            height: 660px;
-       }
+       } 
     }
     .ant-layout-footer{
         padding: 0;
         background-color: #f6f6f8;//#f6f6f8
     }
+}
+.play-list{
+    .title{
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        .count{
+            width: 100%;
+            font-size: 16px;
+            display: flex;
+            margin-top: 10px;
+            .total{
+                flex: 2;
+            }
+            justify-content: space-between;
+            .c-r{
+                cursor: pointer;
+                flex: 1;
+                display: flex;
+                justify-content: space-between;
+            }
+        }
+        .tabs-box{
+            width: 240px;
+            display: flex;
+            border: 1px solid #bbbbbb;
+            border-radius: 15px;
+            div {
+                text-align: center;
+                padding: 6px 10px;
+                 border-radius: 15px;
+                 font-size: 12px;
+                 cursor: pointer;
+                &:nth-child(1) {
+                    flex: 1;
+                }
+                &:nth-child(2) {
+                     flex: 1;
+                }
+                &.active{
+                     background-color: #bbbbbb;
+                     color: #fff;
+                }
+            }
+        }
+    }
+    
 }

@@ -19,6 +19,7 @@
                 display: flex;
                 align-items: center;
                 margin-bottom: 15px;
+                cursor: pointer;
             }
         }
         .mv-video{
@@ -53,6 +54,30 @@
             }
             .third{
                 margin-bottom: 20px;
+            }
+        }
+        .comment{
+            margin: 20px 0;
+            .c-t{
+                display: flex;
+                align-items: center;
+                h2{
+                    font-weight: bold;
+                    margin-right: 5px;
+                }
+                span{
+                    color: #9f9f9f;
+                }
+            }
+            .c-item{
+                margin-top: 15px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                .anticon-smile{
+                    font-size: 20px;
+                    cursor: pointer;
+                }
             }
         }
         .right{

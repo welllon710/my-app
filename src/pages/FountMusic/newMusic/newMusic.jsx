@@ -15,6 +15,7 @@ export default function NewMusic() {
   const [newM, setNewM] = useState([{}, {}, {}]);
   const [cur, setCur] = useState(0);
   const [tabCur, setTabCur] = useState(0);
+  
   const isShow = useMemo(() => {
     return cur === 0 ? true : false;
   }, [cur]);

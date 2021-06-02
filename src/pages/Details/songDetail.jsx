@@ -67,6 +67,10 @@ export default function SongDetail(props) {
   const onChange = ({ target: { value } }) => {
     setValue(value);
   };
+  //点击当前行
+  const rowClick = (row) => {
+    console.log("dianwo",row);
+  };
   return (
     <div className="songDetail">
       <div className="song-top">
@@ -129,7 +133,15 @@ export default function SongDetail(props) {
       <div className="song-tabs">
         <Tabs defaultActiveKey="1">
           <TabPane tab="歌曲列表" key="1">
-            <Table columns={columns} dataSource={lists.songList.tracks} />;
+            <Table
+              columns={columns}
+              rowKey={(record) => record.id}
+              dataSource={lists.songList.tracks}
+              onRow={(record) => ({
+                onDoubleClick: (event) => rowClick(record),
+              })}
+            />
+            ;
           </TabPane>
           <TabPane
             tab={"评论" + "(" + lists.songList.commentCount + ")"}

@@ -18,7 +18,7 @@ export default function Player() {
   const [show, setShow] = useState(true);
   const [jdW, setJdw] = useState(0);
   const [endOffsetX, setEndOffsetX] = useState(0);
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(true);
   const bgRef = useRef();
   const dispatch = useDispatch();
   const changePlayer = (status) => {
@@ -55,12 +55,23 @@ export default function Player() {
     setEndOffsetX(layerX);
   };
   const openDrawer = () => {
-    setVisible(!visible);
-    visible ? dispatch(actions.open(true)) : dispatch(actions.close(false));
+    setVisible((pre) => {
+      console.log('pre', pre);
+      visible ? dispatch(actions.open(true)) : dispatch(actions.close(false));
+      return !pre;
+    });
+    
+    // dispatch(actions.open(true));
+    console.log('点我');
+    // visible ? dispatch(actions.open(true)) : dispatch(actions.close(false));
   };
   return (
     <div className="player">
-      <audio id="audio"></audio>
+      <audio
+        id="audio"
+        autoPlay
+        src={`https://music.163.com/song/media/outer/url?id=5195327.mp3`}
+      ></audio>
       <div className="left">
         <Image
           width={60}
