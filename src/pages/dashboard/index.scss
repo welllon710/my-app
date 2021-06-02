@@ -69,5 +69,25 @@
             }
         }
     }
+    .list{
+        .ant-table-wrapper{
+            cursor: pointer;
+            .ant-table-tbody{
+                td{
+                    padding: 16px 5px;
+                    .song-name{
+                        display: flex;
+                        align-items: center;
+                         .anticon-caret-right {
+                             color: #ec4141;
+                             font-size: 16px;
+                             margin-right: 5px;
+                         }
+                    }
+                   
+                }
+            }
+        }
+    }
     
 }

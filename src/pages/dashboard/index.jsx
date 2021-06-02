@@ -4,6 +4,7 @@ import { Layout, Drawer, Divider, Table } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import actions from "../../redux/actions";
 import "./index.scss";
+import moment from "moment";
 import Myheader from "../../components/Header";
 import Mysider from "../../components/Sider";
 import Plyaer from "../../components/Footer/player";
@@ -13,33 +14,53 @@ import Details from "../Details/details";
 import songDetail from "../Details/songDetail";
 import { SearchDetail } from "../Details/searchDetail";
 import { MvDetail } from "../Details/mvDetail";
-import { PlusSquareOutlined, DeleteOutlined } from "@ant-design/icons";
+import {
+  PlusSquareOutlined,
+  DeleteOutlined,
+  PauseOutlined,
+  CaretRightOutlined,
+} from "@ant-design/icons";
 const { Header, Footer, Sider, Content } = Layout;
 export default function Dashboard(props) {
   const isOpen = useSelector((state) => state.isOpen);
   let isDetails = useSelector((state) => state.isDetails);
+  let {data:playList,i:playIndex } = useSelector((state) => state.playList);
   const dispatch = useDispatch();
   const dispatchTop = useDispatch();
   const history = useHistory();
   const rxp = /\/\w+\-\w+\/[mv]+\//;
+    const columns = [
+      {
+        dataIndex: "title",
+        render: (text, record, index) => (
+          <div className="song-name">
+            {/* <PauseOutlined /> */}
+            <CaretRightOutlined
+              style={{
+                display: playIndex == index ? "block" : "none",
+              }}
+            />
+            {record.name}
+          </div>
+        ),
+      },
+      {
+        dataIndex: "singer",
+        render: (text, record, index) => record.ar[0].name,
+      },
+      {
+        dataIndex: "time",
+        render: (text, record, index) => moment(record.dt).format("MM:SS"),
+      },
+    ];
   const onClose = () => {
-    
     dispatch(actions.close(false));
   };
-  const dataSource = [
-        {
-          dataIndex: "title",
-          // render: (text, record, index) => record.name,
-        },
-        {
-          dataIndex: "singer",
-          // render: (text, record, index) => record.ar[0].name,
-        },
-        {
-          dataIndex: "time",
-          // render: (text, record, index) => moment(record.dt).format("MM:SS"),
-        },
-  ];
+  const rowClick = (record, index) => {
+    //点击播放列表，添加播放
+    console.log("record", record);
+    console.log("playIndex", playIndex);
+  };
   useEffect(() => {
     history.listen((historyLocation) => {
       if (historyLocation.pathname === "/fount-music") {
@@ -64,8 +85,7 @@ export default function Dashboard(props) {
         <Sider
           style={{
             display: rxp.test(history.location.pathname) ? "none" : "block",
-          }}
-        >
+          }}>
           <Mysider></Mysider>
         </Sider>
         <Content style={{ height: isD.height, marginTop: isD.marginTop }}>
@@ -75,17 +95,14 @@ export default function Dashboard(props) {
             <Route path="/fount-music/every-day" component={Details}></Route>
             <Route
               path="/fount-music/detail/:id"
-              component={songDetail}
-            ></Route>
+              component={songDetail}></Route>
             <Route
               path="/fount-music/search-detail"
-              component={SearchDetail}
-            ></Route>
+              component={SearchDetail}></Route>
             <Route
               path="/fount-music/mv/:id"
               name={"mv"}
-              component={MvDetail}
-            ></Route>
+              component={MvDetail}></Route>
           </Switch>
           <Drawer
             className="drawer"
@@ -99,13 +116,12 @@ export default function Dashboard(props) {
               position: "absolute",
               top: "64px",
               height: `calc(100vh - 64px - 70px )`,
-            }}
-          >
+            }}>
             <div className="play-list">
               <div className="title">
                 <Tabs />
                 <div className="count">
-                  <span className="total">总37首</span>
+                  <span className="total">总{playList && playList.length || 0}首</span>
                   <div className="c-r">
                     <div>
                       <PlusSquareOutlined />
@@ -120,7 +136,16 @@ export default function Dashboard(props) {
               </div>
               <Divider />
               <div className="list">
-                {/* <Table dataSource={dataSource} columns={[]} />; */}
+                <Table
+                  dataSource={playList}
+                  pagination={false}
+                  showHeader={false}
+                  rowKey={(record) => record.id}
+                  columns={columns}
+                  onRow={(record, index) => ({
+                    onDoubleClick: (event) => rowClick(record, index),
+                  })}
+                />
               </div>
             </div>
           </Drawer>
@@ -129,8 +154,7 @@ export default function Dashboard(props) {
       <Footer
         style={{
           display: rxp.test(history.location.pathname) ? "none" : "block",
-        }}
-      >
+        }}>
         <Plyaer />
       </Footer>
     </Layout>

@@ -9,6 +9,8 @@ import Api_ from "../../api/foundMusic";
 import CommentItem from "../../components/comment/comment";
 import moment from "moment";
 import "./songDetail.scss";
+import actions from "../../redux/actions";
+import { useDispatch } from "react-redux";
 const { TabPane } = Tabs;
 const { TextArea } = Input;
 export default function SongDetail(props) {
@@ -16,6 +18,7 @@ export default function SongDetail(props) {
     match: { params },
   } = props;
   useHeight();
+  const dispatch =  useDispatch()
   const { lists } = useDetail({ id: params.id });
   const [value, setValue] = useState("");
   const columns = [
@@ -65,11 +68,12 @@ export default function SongDetail(props) {
     console.log("发送评论", res);
   };
   const onChange = ({ target: { value } }) => {
-    setValue(value);
+    setValue(value)
   };
   //点击当前行
-  const rowClick = (row) => {
-    console.log("dianwo",row);
+  const rowClick = (row, i) => {
+    dispatch(actions.savePlayList({ data: lists.songList.tracks, i }));// 传到redux
+    dispatch(actions.currentMusic(row));
   };
   return (
     <div className="songDetail">
@@ -137,8 +141,8 @@ export default function SongDetail(props) {
               columns={columns}
               rowKey={(record) => record.id}
               dataSource={lists.songList.tracks}
-              onRow={(record) => ({
-                onDoubleClick: (event) => rowClick(record),
+              onRow={(record,index) => ({
+                onDoubleClick: (event) => rowClick(record,index),
               })}
             />
             ;

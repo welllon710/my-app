@@ -19,6 +19,7 @@ export default {
         type: 'LEAVE',
         data
     }),
+
     saveUserInfo: data => ({
         type: 'SAVE',
         data
@@ -27,4 +28,18 @@ export default {
         type: 'DEL',
         data
     }),
+
+
+    savePlayList: data => ({
+         type: 'SAVEPT',
+         data
+    }),
+    delPlayList: data => ({
+         type: 'DELPT',
+         data
+    }),
+    currentMusic: data => ({
+        type: 'SAVECT',
+        data
+    })
 }

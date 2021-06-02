@@ -1,3 +1,4 @@
+import moment from "moment";
 const width = document.documentElement.clientWidth;
 export default {
   widthReducer(preSate = width, action) {
@@ -54,17 +55,33 @@ export default {
         return preStae;
     }
   },
-  savePlayList(preStae = [], action) {
+  savePlayList(preStae = {}, action) {
     const { type, data } = action;
-     switch (type) {
-       case "SAVE":
-         preStae = data;
-         return preStae;
-       case "DEL":
-         preStae = data;
-         return preStae;
-       default:
-         return preStae;
-     }
+    switch (type) {
+      case "SAVEPT":
+        preStae = data;
+        return preStae;
+      case "DELPT":
+        preStae = data;
+        return preStae;
+      default:
+        return preStae;
+    }
+  },
+  currentMusic(preStae = {}, action) {
+    const { type, data } = action;
+    switch (type) {
+      case "SAVECT":
+        preStae = {
+          ...preStae,
+          id: data.id,
+          name: data.name,
+          auth: data.ar[0].name,
+          time: moment(data.dt).format("MM:SS"),
+        };
+        return preStae;
+      default:
+        return preStae;
+    }
   },
 };

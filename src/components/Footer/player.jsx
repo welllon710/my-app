@@ -21,6 +21,7 @@ export default function Player() {
   const [visible, setVisible] = useState(true);
   const bgRef = useRef();
   const dispatch = useDispatch();
+  let currentMusic = useSelector((state) => state.currentMusic);
   const changePlayer = (status) => {
     setShow(!status);
   };
@@ -70,8 +71,7 @@ export default function Player() {
       <audio
         id="audio"
         autoPlay
-        src={`https://music.163.com/song/media/outer/url?id=5195327.mp3`}
-      ></audio>
+        src={`https://music.163.com/song/media/outer/url?id=${currentMusic.id}.mp3`}></audio>
       <div className="left">
         <Image
           width={60}
@@ -80,9 +80,9 @@ export default function Player() {
         />
         <div className="left-text">
           <p>
-            玩具(吉他版) <HeartOutlined />
+            {currentMusic.name} <HeartOutlined />
           </p>
-          <p>就是南方凯</p>
+          <p>{currentMusic.auth}</p>
         </div>
       </div>
       <div className="centre">
@@ -109,6 +109,7 @@ export default function Player() {
               style={{ transform: `translateX(${endOffsetX + "px"})` }}
             />
           </div>
+          <span className="end-time">{currentMusic.time}</span>
         </div>
       </div>
       <div className="right">
