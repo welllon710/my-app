@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Image, Progress, Drawer } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import actions from "../../redux/actions";
@@ -20,10 +20,24 @@ export default function Player() {
   const [endOffsetX, setEndOffsetX] = useState(0);
   const [visible, setVisible] = useState(true);
   const bgRef = useRef();
+  const audioRef = useRef()
   const dispatch = useDispatch();
   let currentMusic = useSelector((state) => state.currentMusic);
+  useEffect(() => {
+    console.log("audioRef", audioRef);
+
+  }, [])
   const changePlayer = (status) => {
-    setShow(!status);
+    setShow(pre => {
+      console.log("pre", pre);
+      if (pre) {
+        audioRef.current.play();
+      } else {
+        audioRef.current.pause();
+      }
+      return !status;
+    });
+
   };
   const mouseDown = ($event) => {
     let { target } = $event;
@@ -69,8 +83,8 @@ export default function Player() {
   return (
     <div className="player">
       <audio
+        ref={audioRef}
         id="audio"
-        autoPlay
         src={`https://music.163.com/song/media/outer/url?id=${currentMusic.id}.mp3`}></audio>
       <div className="left">
         <Image
