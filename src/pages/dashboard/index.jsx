@@ -1,6 +1,6 @@
 import React, { useMemo, useEffect, useState } from "react";
 import { Route, Switch, useHistory } from "react-router-dom";
-import { Layout, Drawer, Divider, Table } from "antd";
+import { Layout} from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import actions from "../../redux/actions";
 import "./index.scss";
@@ -14,53 +14,18 @@ import Details from "../Details/details";
 import songDetail from "../Details/songDetail";
 import { SearchDetail } from "../Details/searchDetail";
 import { MvDetail } from "../Details/mvDetail";
+import { Lyric } from "./../Lyric/index";
 import {
-  PlusSquareOutlined,
-  DeleteOutlined,
-  PauseOutlined,
   CaretRightOutlined,
 } from "@ant-design/icons";
 const { Header, Footer, Sider, Content } = Layout;
 export default function Dashboard(props) {
-  const isOpen = useSelector((state) => state.isOpen);
   let isDetails = useSelector((state) => state.isDetails);
-  let {data:playList,i:playIndex } = useSelector((state) => state.playList);
   const dispatch = useDispatch();
   const dispatchTop = useDispatch();
   const history = useHistory();
   const rxp = /\/\w+\-\w+\/[mv]+\//;
-    const columns = [
-      {
-        dataIndex: "title",
-        render: (text, record, index) => (
-          <div className="song-name">
-            {/* <PauseOutlined /> */}
-            <CaretRightOutlined
-              style={{
-                display: playIndex == index ? "block" : "none",
-              }}
-            />
-            {record.name}
-          </div>
-        ),
-      },
-      {
-        dataIndex: "singer",
-        render: (text, record, index) => record.ar[0].name,
-      },
-      {
-        dataIndex: "time",
-        render: (text, record, index) => moment(record.dt).format("MM:SS"),
-      },
-    ];
-  const onClose = () => {
-    dispatch(actions.close(false));
-  };
-  const rowClick = (record, index) => {
-    //点击播放列表，添加播放
-    console.log("record", record);
-    console.log("playIndex", playIndex);
-  };
+  const rxpLyric = /\/\w+\-\w+\/[lyric]+\//;
   useEffect(() => {
     history.listen((historyLocation) => {
       if (historyLocation.pathname === "/fount-music") {
@@ -71,9 +36,9 @@ export default function Dashboard(props) {
   const isD = useMemo(() => {
     //`calc(100vh - 64px - 70px - 64px )`
     if (isDetails) {
-      return { height: `calc(100vh - 64px - 70px - 64px )`, marginTop: "64px" };
+      return { height: `calc(100vh - 64px - 80px - 64px )`, marginTop: "64px" };
     } else {
-      return { height: `calc(100vh - 64px - 70px )`, marginTop: "0px" };
+      return { height: `calc(100vh - 64px - 80px )`, marginTop: "0px" };
     }
   }, [isDetails]);
   return (
@@ -84,7 +49,11 @@ export default function Dashboard(props) {
       <Layout>
         <Sider
           style={{
-            display: rxp.test(history.location.pathname) ? "none" : "block",
+            display:
+              rxp.test(history.location.pathname) ||
+              rxpLyric.test(history.location.pathname)
+                ? "none"
+                : "block",
           }}>
           <Mysider></Mysider>
         </Sider>
@@ -103,52 +72,11 @@ export default function Dashboard(props) {
               path="/fount-music/mv/:id"
               name={"mv"}
               component={MvDetail}></Route>
+            <Route
+              path="/fount-music/lyric/:id"
+              name={"mv"}
+              component={Lyric}></Route>
           </Switch>
-          <Drawer
-            className="drawer"
-            placement="right"
-            closable={false}
-            onClose={onClose}
-            visible={isOpen}
-            mask={false}
-            width={500}
-            style={{
-              position: "absolute",
-              top: "64px",
-              height: `calc(100vh - 64px - 70px )`,
-            }}>
-            <div className="play-list">
-              <div className="title">
-                <Tabs />
-                <div className="count">
-                  <span className="total">总{playList && playList.length || 0}首</span>
-                  <div className="c-r">
-                    <div>
-                      <PlusSquareOutlined />
-                      <span>收藏全部</span>
-                    </div>
-                    <div>
-                      <DeleteOutlined />
-                      <span>清空</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <Divider />
-              <div className="list">
-                <Table
-                  dataSource={playList}
-                  pagination={false}
-                  showHeader={false}
-                  rowKey={(record) => record.id}
-                  columns={columns}
-                  onRow={(record, index) => ({
-                    onDoubleClick: (event) => rowClick(record, index),
-                  })}
-                />
-              </div>
-            </div>
-          </Drawer>
         </Content>
       </Layout>
       <Footer
@@ -161,28 +89,4 @@ export default function Dashboard(props) {
   );
 }
 
-const Tabs = () => {
-  const [cur, setCur] = useState(0);
-  const isShow = useMemo(() => {
-      return cur === 0 ? true : false;
-    }, [cur]);
-  const handleTabs = (i) => {
-      setCur(i);
-  };
-  return (
-    <div className="tabs-box">
-      {["播放列表", "历史记录"].map((item, index) => {
-        return (
-          <div
-            className={index === cur ? "active" : ""}
-            key={index}
-            onClick={() => handleTabs(index)}
-          >
-            {item}
-          </div>
-        );
-      })}
-    </div>
-  );
-  
-}
+

@@ -6,6 +6,7 @@
         display: flex;
         padding: 5px 10px;
         margin-left: 10px;
+        align-items: center;
         .left-text{
             margin-left: 10px;
             p{
@@ -58,7 +59,7 @@
            .ball{
                position: absolute;
                font-size: 22px;
-               top: -9px;
+               top: -13px;
                left: -11px;
                color: #ec4141;
                cursor: pointer;

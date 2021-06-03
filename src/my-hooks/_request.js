@@ -76,7 +76,8 @@ const useDetail = (params) => {
     });
     return {playList:p,songList:c}
   }
-  const { data } = useRequest("", {
+  const { run } = useRequest("", {
+    manual:true,
     requestMethod: (p) =>
       Promise.all([
         test(),
@@ -86,7 +87,6 @@ const useDetail = (params) => {
         }),
       ]),
     onSuccess: (data, params) => {
-      // console.log('data', data);
        setLists((pre) => {
          return {
            ...pre,
@@ -98,7 +98,7 @@ const useDetail = (params) => {
     }
   });
   return {
-    lists,
+    run,
   };
 };
 const useEveryDay = (params) => {

@@ -1,0 +1,59 @@
+.lyric{
+    display: flex;
+    justify-content: center;
+    .lyric-box{
+         width: 65%;
+         min-width: 1100px;
+         display: flex;
+         padding: 15px 0;
+         .left{
+             flex: 1;
+             display: flex;
+             justify-content: center;
+             .img-box{
+                 position: relative;
+                 width: 300px;
+                 .bg-img{
+                     position: relative;
+                     z-index: 10;
+                 }
+                 .midle-img {
+                     position: absolute;
+                     top: -260px;
+                     left: 50px;
+                     z-index: 5;
+                 }
+             }
+         }
+         .right{
+               flex: 1;
+             .song-title{
+                 width: 100%;
+                .row-first{
+                    display: flex;
+                    font-size: 20px;
+                    align-items: center;
+                    h2{
+                        margin-right: 10px;
+                    }
+                }
+                .row-second{
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    div{
+                        display: flex;
+                        align-items: center;
+                        color: #507daf;
+                        p {
+                            margin: 0;
+                            color: #000;
+                            margin-right: 10px;
+                        }
+                        
+                    }
+                }
+             }
+         }
+    }
+}
