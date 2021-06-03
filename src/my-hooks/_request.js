@@ -59,32 +59,46 @@ const useSongList = () => {
 const useDetail = (params) => {
   const [lists, setLists] = useState({
     songList: {},
+    playList: {},
     comment: {},
   })
+  async function test() {
+    const p = await requestList({
+          ...fontMusic.songDetail,
+          params,
+    })
+    let ps = p.playlist.trackIds.map(item => item.id).join()
+    const c  =  await requestList({
+      ...fontMusic.songDetailed,
+      params: {
+        ids:ps
+      },
+    });
+    return {playList:p,songList:c}
+  }
   const { data } = useRequest("", {
     requestMethod: (p) =>
       Promise.all([
-        requestList({
-          ...fontMusic.songDetail,
-          params,
-        }),
+        test(),
         requestList({
           ...fontMusic.commentList,
           params,
         }),
       ]),
     onSuccess: (data, params) => {
+      // console.log('data', data);
        setLists((pre) => {
          return {
            ...pre,
-           songList: data[0].playlist,
+           playList: data[0].playList,
+           songList: data[0].songList,
            comment: data[1],
          };
        });
     }
   });
   return {
-   lists
+    lists,
   };
 };
 const useEveryDay = (params) => {

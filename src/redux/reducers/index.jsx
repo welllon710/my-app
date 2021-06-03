@@ -77,7 +77,10 @@ export default {
           id: data.id,
           name: data.name,
           auth: data.ar[0].name,
+          picUrl:data.al.picUrl,
           time: moment(data.dt).format("MM:SS"),
+          timestamp:data.dt / 1000,
+          isPlay:true,
         };
         return preStae;
       default:
