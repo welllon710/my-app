@@ -13,6 +13,9 @@
              .img-box{
                  position: relative;
                  width: 300px;
+                 height: 300px;
+                 overflow: hidden;
+                   animation: myMove1  5s linear 0s infinite;
                  .bg-img{
                      position: relative;
                      z-index: 10;
@@ -54,6 +57,23 @@
                     }
                 }
              }
+             .lyric{
+                 display: flex;
+                 flex-direction: column;
+                 height: 300px;
+                 overflow-y: auto;
+                 margin-top: 20px;
+                 .l-item{
+                     padding: 10px ;
+                 }
+                 .is-show{
+                     color: #ec4141;
+                 }
+             }
          }
     }
+}
+@keyframes myMove1 {
+    from {transform: rotate(0deg);}
+    to {transform: rotate(360deg);}
 }

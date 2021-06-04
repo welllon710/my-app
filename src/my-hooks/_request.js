@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import request from "../api/request";
 import fontMusic from "../api/foundMusic.js";
-import useUrlState from "@ahooksjs/use-url-state";
+import API_lyric from "../api/lyric";
 import { useRequest } from "ahooks";
 const requestList = async (datas) => {
   const { url, method = "get", data, params } = datas;
@@ -165,6 +165,13 @@ const useSearch = (isDetail = false, isD = true, pms = {}) => {
     setsLists
   }
 }
+const useLyric = (id) => {
+  const { run } = useRequest("", {
+     manual:true,
+     requestMethod: () => request({ ...API_lyric.getLyric, params: { id } }),
+   });
+  return { run };
+}
 export {
   requestList,
   useDashboard,
@@ -172,5 +179,6 @@ export {
   useDetail,
   useEveryDay,
   useHot,
-  useSearch
+  useSearch,
+  useLyric,
 };

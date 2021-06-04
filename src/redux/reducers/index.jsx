@@ -77,11 +77,34 @@ export default {
           id: data.id,
           name: data.name,
           auth: data.ar[0].name,
-          picUrl:data.al.picUrl,
+          picUrl: data.al.picUrl,
           time: moment(data.dt).format("mm:ss"),
-          timestamp:data.dt / 1000,
-          isPlay:true,
+          timestamp: data.dt / 1000,
+          isPlay: true,
         };
+        return preStae;
+      default:
+        return preStae;
+    }
+  },
+  currentStatus(preStae = "start", action) {
+    const { type, data } = action;
+    switch (type) {
+      case "START":
+        preStae = data;
+        return preStae;
+      case "END":
+        preStae = data;
+        return preStae;
+      default:
+        return preStae;
+    }
+  },
+  currentTime(preStae = "", action) {
+    const { type, data } = action;
+    switch (type) {
+      case "CUTME":
+        preStae = data;
         return preStae;
       default:
         return preStae;

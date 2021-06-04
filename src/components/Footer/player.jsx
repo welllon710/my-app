@@ -34,6 +34,7 @@ export default function Player() {
   const dispatch = useDispatch();
   const history = useHistory()
   let currentMusic = useSelector((state) => state.currentMusic);
+  let currentStatus = useSelector((state) => state.currentStatus);
   let { data: playList, i: playIndex } = useSelector(
       (state) => state.playList
   );
@@ -67,8 +68,10 @@ export default function Player() {
     if (currentMusic.isPlay) {
       setShow(!currentMusic.isPlay);
       audioRef.current.play();
+      dispatch(actions.isStart('start'));
       setInterval(() => {
         setCurrentTime(audioRef.current.currentTime);
+        dispatch(actions.currentTime(audioRef.current.currentTime));
       }, 100);
     }
   }, [currentMusic]);
@@ -86,6 +89,13 @@ export default function Player() {
           : "0" + Math.floor(currentTime % 60),
     });
     setEndOffsetX((bgW * currentTime) / currentMusic.timestamp);
+    if (Math.floor(currentTime) == Math.floor(currentMusic.timestamp)) {
+
+      if (currentStatus == 'start') {
+        dispatch(actions.isEnd("end"));
+        console.log('执行了几遍');
+      } 
+    }
   }, [currentTime]);
   //播放暂停
   const changePlayer = (status) => {
@@ -140,7 +150,8 @@ export default function Player() {
     });
   };
   const handleLyric = () => {
-     history.push(`/fount-music/lyric/1231`);
+    // console.log("currentMusic.id", currentMusic.id);
+    history.push(`/fount-music/lyric/${currentMusic.id}`);
   }
   return (
     <div className="player">
