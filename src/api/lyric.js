@@ -3,4 +3,8 @@ export default {
   getLyric: {
     url: "/lyric",
   },
+  //歌曲评论
+  getSongComment: {
+      url: "/comment/music",
+  },
 };

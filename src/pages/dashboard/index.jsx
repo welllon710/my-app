@@ -73,8 +73,8 @@ export default function Dashboard(props) {
               name={"mv"}
               component={MvDetail}></Route>
             <Route
-              path="/fount-music/lyric/:id"
-              name={"mv"}
+              path="/fount-music/lyric"
+              name={"lyric"}
               component={Lyric}></Route>
           </Switch>
         </Content>

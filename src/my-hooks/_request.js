@@ -1,10 +1,20 @@
-import { useState, useEffect } from "react";
+import {
+  useState,
+  useEffect
+} from "react";
 import request from "../api/request";
 import fontMusic from "../api/foundMusic.js";
 import API_lyric from "../api/lyric";
-import { useRequest } from "ahooks";
+import {
+  useRequest
+} from "ahooks";
 const requestList = async (datas) => {
-  const { url, method = "get", data, params } = datas;
+  const {
+    url,
+    method = "get",
+    data,
+    params
+  } = datas;
   const parasms = {
     url,
     method,
@@ -20,7 +30,10 @@ const requestList = async (datas) => {
   return request(parasms);
 };
 const useDashboard = () => {
-  const { run, refresh } = useRequest("", {
+  const {
+    run,
+    refresh
+  } = useRequest("", {
     manual: true,
     requestMethod: (param) =>
       Promise.all([
@@ -37,7 +50,10 @@ const useDashboard = () => {
   };
 };
 const useSongList = () => {
-  const { run, refresh } = useRequest((p) => p, {
+  const {
+    run,
+    refresh
+  } = useRequest((p) => p, {
     manual: true,
     requestMethod: (param) =>
       requestList({
@@ -47,7 +63,9 @@ const useSongList = () => {
         },
       }), //获取全部歌单
   });
-  const { data } = useRequest("", {
+  const {
+    data
+  } = useRequest("", {
     requestMethod: (param) => requestList(fontMusic.playlistHot),
   });
   return {
@@ -64,20 +82,25 @@ const useDetail = (params) => {
   })
   async function test() {
     const p = await requestList({
-          ...fontMusic.songDetail,
-          params,
+      ...fontMusic.songDetail,
+      params,
     })
     let ps = p.playlist.trackIds.map(item => item.id).join()
-    const c  =  await requestList({
+    const c = await requestList({
       ...fontMusic.songDetailed,
       params: {
-        ids:ps
+        ids: ps
       },
     });
-    return {playList:p,songList:c}
+    return {
+      playList: p,
+      songList: c
+    }
   }
-  const { run } = useRequest("", {
-    manual:true,
+  const {
+    run
+  } = useRequest("", {
+    manual: true,
     requestMethod: (p) =>
       Promise.all([
         test(),
@@ -87,14 +110,14 @@ const useDetail = (params) => {
         }),
       ]),
     onSuccess: (data, params) => {
-       setLists((pre) => {
-         return {
-           ...pre,
-           playList: data[0].playList,
-           songList: data[0].songList,
-           comment: data[1],
-         };
-       });
+      setLists((pre) => {
+        return {
+          ...pre,
+          playList: data[0].playList,
+          songList: data[0].songList,
+          comment: data[1],
+        };
+      });
     }
   });
   return {
@@ -102,8 +125,10 @@ const useDetail = (params) => {
   };
 };
 const useEveryDay = (params) => {
-  const [lists,setLists] = useState([])
-  const { data } = useRequest('', {
+  const [lists, setLists] = useState([])
+  const {
+    data
+  } = useRequest('', {
     requestMethod: () => requestList({
       ...fontMusic.recommend,
       params,
@@ -115,20 +140,22 @@ const useEveryDay = (params) => {
   return {
     lists
   }
-  
+
 };
 const useHot = () => {
-  const [lists,setLists] = useState([])
-  const { run } = useRequest('', {
+  const [lists, setLists] = useState([])
+  const {
+    run
+  } = useRequest('', {
     requestMethod: () => request(fontMusic.hotSearch),
     onSuccess: (data, params) => {
       setLists(data.data)
-     }
+    }
   })
   return {
     lists
   }
-  
+
 }
 const useSearch = (isDetail = false, isD = true, pms = {}) => {
   const [slists, setsLists] = useState([]);
@@ -136,9 +163,9 @@ const useSearch = (isDetail = false, isD = true, pms = {}) => {
     run,
     cancel
   } = useRequest(({
-        keyword,
-        type = 1
-      }) => ({
+    keyword,
+    type = 1
+  }) => ({
     ...fontMusic.search,
     params: {
       keywords: keyword,
@@ -146,18 +173,18 @@ const useSearch = (isDetail = false, isD = true, pms = {}) => {
     }
   }), {
     manual: true,
-    debounceInterval: isD?1000:50,
+    debounceInterval: isD ? 1000 : 50,
     requestMethod: (param) => requestList({
-      ...param, ...pms
+      ...param,
+      ...pms
     }),
     onSuccess: (data, params) => {
       setsLists((pre) => {
         return isDetail ? data.result.songs.filter((item, index) => index <= 5) :
-           data.result
-       })
+          data.result
+      })
     },
-  }
-    )
+  })
   return {
     run,
     cancel,
@@ -166,11 +193,26 @@ const useSearch = (isDetail = false, isD = true, pms = {}) => {
   }
 }
 const useLyric = (id) => {
-  const { run } = useRequest("", {
-     manual:true,
-     requestMethod: () => request({ ...API_lyric.getLyric, params: { id } }),
-   });
-  return { run };
+  //getSongComment request({ ...API_lyric.getLyric, params: { id } })
+  const {
+    run
+  } = useRequest("", {
+    manual: true,
+    requestMethod: () => Promise.all([request({
+      ...API_lyric.getLyric,
+      params: {
+        id
+      }
+    }), request({
+      ...API_lyric.getSongComment,
+      params: {
+        id
+      }
+    })]),
+  });
+  return {
+    run
+  };
 }
 export {
   requestList,

@@ -15,11 +15,15 @@ import {
   CaretRightOutlined,
   PlusSquareOutlined,
   DeleteOutlined,
+  PauseOutlined
 } from "@ant-design/icons";
 import moment from "moment";
 import "./player.scss";
 import { useHistory } from 'react-router';
+import useUrlState from "@ahooksjs/use-url-state";
 export default function Player() {
+  let bgW;
+  const [urlData, setUrlData] = useUrlState({ id: "" });
   const [show, setShow] = useState(true);
   const [endOffsetX, setEndOffsetX] = useState(0);
   const [visible, setVisible] = useState(true);
@@ -38,31 +42,48 @@ export default function Player() {
   let { data: playList, i: playIndex } = useSelector(
       (state) => state.playList
   );
-  let bgW;
+  const [currnetI, setCurrnetI] = useState(playIndex);
+  useEffect(() => {
+    setCurrnetI(playIndex);
+  }, [playIndex]);
+  
   const columns = [
-        {
-          dataIndex: "title",
-          render: (text, record, index) => (
-            <div className="song-name">
-              {/* <PauseOutlined /> */}
-              <CaretRightOutlined
-                style={{
-                  display: playIndex == index ? "block" : "none",
-                }}
-              />
-              {record.name}
-            </div>
-          ),
-        },
-        {
-          dataIndex: "singer",
-          render: (text, record, index) => record.ar[0].name,
-        },
-        {
-          dataIndex: "time",
-          render: (text, record, index) => moment(record.dt).format("MM:SS"),
-        },
-      ];
+    {
+      dataIndex: "title",
+      render: (text, record, index) => (
+        <div className="song-name">
+          {currentStatus == "start" ? (
+            <CaretRightOutlined
+              style={{
+                display: playIndex == index ? "block" : "none",
+              }}
+            />
+          ) : (
+            <PauseOutlined
+              style={{
+                display: playIndex == index ? "block" : "none",
+              }}
+            />
+          )}
+          {/* <PauseOutlined /> */}
+          {/* <CaretRightOutlined
+            style={{
+              display: playIndex == index ? "block" : "none",
+            }}
+          /> */}
+          {record.name}
+        </div>
+      ),
+    },
+    {
+      dataIndex: "singer",
+      render: (text, record, index) => record.ar[0].name,
+    },
+    {
+      dataIndex: "time",
+      render: (text, record, index) => moment(record.dt).format("MM:SS"),
+    },
+  ];
   useEffect(() => {
     //  bgW = bgRef.current.clientWidth;
     if (currentMusic.isPlay) {
@@ -93,9 +114,14 @@ export default function Player() {
 
       if (currentStatus == 'start') {
         dispatch(actions.isEnd("end"));
-        console.log('执行了几遍');
-      } 
+      }
+      if (currentStatus == "end") {
+        handleChange("advance");
+      }
     }
+
+
+
   }, [currentTime]);
   //播放暂停
   const changePlayer = (status) => {
@@ -103,20 +129,47 @@ export default function Player() {
       if (pre) {
         //true 播放
         audioRef.current.play();
+        dispatch(actions.isStart("start"));
       } else {
         //false 暂停
         audioRef.current.pause();
+        dispatch(actions.isEnd("end"));
+
       }
       return !status;
     });
+  };
+  //上下一首
+  const handleChange = (opt) => {
+      if (opt == "advance") {
+        //前进
+        setCurrnetI(pre => {
+          pre++;
+          if (pre >= playList.length) pre = playList.length;
+          dispatch(actions.savePlayList({ data: playList, i: pre }));
+          dispatch(actions.currentMusic(playList[pre]));
+          setUrlData({ id: playList[pre].id });
+          return pre;
+        });
+      } else {
+        //后退
+        setCurrnetI((pre) => {
+          pre--;
+          if (pre <= 0) pre = 0;
+          dispatch(actions.savePlayList({ data: playList, i: pre }));
+          dispatch(actions.currentMusic(playList[pre]));
+          setUrlData({ id: playList[pre].id });
+          return pre;
+        });
+    }
   };
   const onClose = () => {
       dispatch(actions.close(false));
   };
   const rowClick = (record, index) => {
       //点击播放列表，添加播放
-      console.log("record", record);
-      console.log("playIndex", playIndex);
+    dispatch(actions.savePlayList({ data: playList, i: index }));
+    dispatch(actions.currentMusic(record));
   };
   const mouseDown = ($event) => {
     let startX = $event.nativeEvent.clientX;
@@ -151,7 +204,11 @@ export default function Player() {
   };
   const handleLyric = () => {
     // console.log("currentMusic.id", currentMusic.id);
-    history.push(`/fount-music/lyric/${currentMusic.id}`);
+    // history.push(`/fount-music/lyric/${currentMusic.id}`);
+    history.push(`/fount-music/lyric`);
+    setUrlData({
+      id:currentMusic.id
+    });
   }
   return (
     <div className="player">
@@ -163,8 +220,15 @@ export default function Player() {
             ? `https://music.163.com/song/media/outer/url?id=${currentMusic.id}.mp3`
             : ""
         }></audio>
-      <div className="left">
-        <Image width={60} height={60} src={currentMusic.picUrl} preview={false} style={{ cursor: 'pointer' }} onClick={handleLyric }/>
+      <div className="left" style={{ opacity: currentMusic.id ? "1" : "0" }}>
+        <Image
+          width={60}
+          height={60}
+          src={currentMusic.picUrl}
+          preview={false}
+          style={{ cursor: "pointer" }}
+          onClick={handleLyric}
+        />
         <div className="left-text">
           <p>
             {currentMusic.name} <HeartOutlined />
@@ -179,13 +243,13 @@ export default function Player() {
         <div className="icon-btn">
           <div className="btn-box">
             <RetweetOutlined />
-            <StepBackwardOutlined />
+            <StepBackwardOutlined onClick={() => handleChange("retreat")} />
             {show ? (
               <PlayCircleOutlined onClick={() => changePlayer(true)} />
             ) : (
               <PauseCircleOutlined onClick={() => changePlayer(false)} />
             )}
-            <StepForwardOutlined />
+            <StepForwardOutlined onClick={() => handleChange("advance")} />
             <SendOutlined />
           </div>
         </div>
@@ -198,7 +262,10 @@ export default function Player() {
             <SmileOutlined
               className="ball"
               onMouseDown={mouseDown}
-              style={{ transform: `translateX(${endOffsetX + "px"})`,transition:'width 50ms' }}
+              style={{
+                transform: `translateX(${endOffsetX + "px"})`,
+                transition: "width 50ms",
+              }}
             />
           </div>
           <span className="end-time">{currentMusic.time}</span>
