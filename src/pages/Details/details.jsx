@@ -17,7 +17,7 @@ export default function Details(props) {
   const [day] = useState(() => new Date().getDate());
   const columns = [
     {
-      title: "序号",
+      title: "序123123号",
       render: (text, record, index) => `${index + 1}`,
     },
     {
